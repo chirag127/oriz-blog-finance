@@ -1,0 +1,206 @@
+---
+/**
+ * LedgerMeter — COMPOUND//TERMINAL signature element.
+ *
+ * A static "compounding runway" visualization: four horizontal ledger bars
+ * representing the wealth-building stages every retail investor passes
+ * through (Emergency Buffer → Index Scaffold → Compounding Core → FIRE Runway).
+ * Each bar fills proportionally (CSS only, no JS), labeled with a mono kicker
+ * and a gold milestone marker on the active stage.
+ *
+ * Pure CSS + SVG — no runtime JS, no external deps. Responsive down to 390px.
+ * Reduced-motion: strips fill animation, keeps static bars.
+ */
+
+export interface Props {
+  /** Highlight which stage to mark as "active" (0-indexed, 0–3). */
+  activeStage?: 0 | 1 | 2 | 3
+}
+
+const { activeStage = 1 } = Astro.props
+
+const stages = [
+  {
+    code: 'EMG',
+    label: 'Emergency buffer',
+    desc: '3–6 months expenses in a liquid fund',
+    pct: 22,
+    color: 'var(--v-culture)',
+  },
+  {
+    code: 'IDX',
+    label: 'Index scaffold',
+    desc: 'Nifty 50 + Nifty Next 50 SIPs, no stock-picking',
+    pct: 48,
+    color: 'var(--v-dev)',
+  },
+  {
+    code: 'CMP',
+    label: 'Compounding core',
+    desc: 'Debt + equity rebalance, tax-loss harvest',
+    pct: 74,
+    color: 'var(--gold)',
+  },
+  {
+    code: 'FIR',
+    label: 'FIRE runway',
+    desc: '25× annual spend invested, 4% withdrawal',
+    pct: 100,
+    color: 'var(--brand)',
+  },
+]
+---
+
+<aside class="meter" aria-label="Compounding runway — wealth-building stages">
+  <header class="meter-head">
+    <span class="meter-eyebrow">◆ Compounding Runway</span>
+    <span class="meter-sub">Four stages every Indian investor climbs</span>
+  </header>
+
+  <ol class="stages" role="list">
+    {stages.map((s, i) => (
+      <li class:list={['stage', i === activeStage && 'stage-active']} style={`--pct:${s.pct}%;--clr:${s.color}`}>
+        <div class="stage-meta">
+          <span class="stage-code">{s.code}</span>
+          <span class="stage-label">{s.label}</span>
+          {i === activeStage && <span class="stage-badge" aria-label="current stage">NOW</span>}
+        </div>
+        <div class="stage-track" role="progressbar" aria-valuenow={s.pct} aria-valuemin={0} aria-valuemax={100} aria-label={s.label}>
+          <div class="stage-fill"></div>
+          <span class="stage-pct">{s.pct}%</span>
+        </div>
+        <p class="stage-desc">{s.desc}</p>
+      </li>
+    ))}
+  </ol>
+
+  <p class="meter-note">// wealth = time × rate × discipline — not timing the market</p>
+</aside>
+
+<style>
+  .meter {
+    border: 1px solid var(--rule-strong, var(--rule));
+    background: var(--paper-2);
+    padding: 1.125rem 0.875rem 0.875rem;
+    font-family: var(--font-mono);
+  }
+
+  .meter-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem 1rem;
+    margin-bottom: 1.125rem;
+  }
+  .meter-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--gold);
+  }
+  .meter-sub {
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    color: var(--ink-mute);
+  }
+
+  .stages {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .stage { position: relative; }
+
+  .stage-meta {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin-bottom: 0.35rem;
+  }
+  .stage-code {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    color: var(--clr, var(--brand));
+    flex: 0 0 auto;
+  }
+  .stage-label {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+    flex: 1 1 auto;
+  }
+  .stage-active .stage-label { color: var(--clr, var(--brand)); }
+
+  .stage-badge {
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    font-weight: 700;
+    color: var(--color-accent-fg, #fbfaf7);
+    background: var(--clr, var(--brand));
+    padding: 1px 5px;
+    flex: 0 0 auto;
+  }
+
+  .stage-track {
+    position: relative;
+    height: 6px;
+    background: color-mix(in oklab, var(--rule) 80%, transparent);
+    overflow: hidden;
+  }
+  .stage-fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: var(--pct);
+    background: var(--clr, var(--brand));
+    animation: meter-fill 900ms var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1)) both;
+    transform-origin: left;
+  }
+  .stage:nth-child(1) .stage-fill { animation-delay: 80ms; }
+  .stage:nth-child(2) .stage-fill { animation-delay: 180ms; }
+  .stage:nth-child(3) .stage-fill { animation-delay: 280ms; }
+  .stage:nth-child(4) .stage-fill { animation-delay: 380ms; }
+
+  @keyframes meter-fill {
+    from { width: 0; }
+    to   { width: var(--pct); }
+  }
+
+  .stage-pct {
+    position: absolute;
+    right: 4px;
+    top: -1px;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    color: var(--ink-mute);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .stage-desc {
+    margin: 0.3rem 0 0;
+    font-size: 11px;
+    letter-spacing: 0.02em;
+    color: var(--ink-mute);
+    line-height: 1.45;
+  }
+
+  .meter-note {
+    margin: 1rem 0 0;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: var(--ink-mute);
+    border-top: 1px solid var(--rule);
+    padding-top: 0.625rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .stage-fill { animation: none; }
+  }
+</style>

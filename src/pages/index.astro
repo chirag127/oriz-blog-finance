@@ -8,6 +8,7 @@
  * The persistent right WATCHLIST rail (positions / sectors / fill log) comes
  * from BaseLayout, so the homepage no longer repeats series/category strata.
  */
+import LedgerMeter from '~/components/LedgerMeter.astro'
 import BaseLayout from '~/layouts/BaseLayout.astro'
 import {
   getCategoriesWithCounts,
@@ -104,6 +105,9 @@ const jsonLd = {
         <div class="stat"><dt>Running</dt><dd>{yearsRunning}y</dd></div>
       </dl>
     </section>
+
+    {/* ── LEDGER METER — compounding runway signature element ──────────── */}
+    <LedgerMeter activeStage={1} />
 
     {/* ── BLOTTER — dense fill rows ──────────────────────────────────── */}
     <section class="blotter" aria-labelledby="blotter-h">
