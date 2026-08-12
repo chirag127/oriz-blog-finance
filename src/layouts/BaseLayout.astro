@@ -11,7 +11,7 @@ import '~/styles/oriz-ui-overrides.css'
 import 'katex/dist/katex.min.css'
 import '~/styles/tokens.css'
 import { ClientRouter } from 'astro:transitions'
-import AppSidebarContent from '~/components/AppSidebarContent.astro'
+import WatchlistRail from '~/components/WatchlistRail.astro'
 import BottomBar from '~/components/chrome/BottomBar.astro'
 import ConsentBanner from '~/components/chrome/ConsentBanner.astro'
 import FamilyChrome from '~/components/chrome/FamilyChrome.astro'
@@ -35,7 +35,7 @@ interface Props {
 }
 
 const {
-  title = 'Compound — money notes for India',
+  title = 'COMPOUND · finance terminal',
   description = 'Plain, practical money notes for Indian investors and savers. Index funds, credit, tax, and building an emergency fund, explained without the sales pitch.',
   canonical = `https://finance-blog.oriz.in${Astro.url.pathname}`,
   noindex = false,
@@ -52,7 +52,7 @@ const beaconToken = import.meta.env.PUBLIC_CF_BEACON_TOKEN
 const ga4Id = import.meta.env.PUBLIC_GA4_ID
 const ogImage = image ? new URL(image, 'https://finance-blog.oriz.in').toString() : undefined
 const visibleBottomBarActions = hideSidebar
-  ? bottomBarActions.filter((action) => action.label !== 'Menu')
+  ? bottomBarActions.filter((action) => action.label !== 'Watchlist')
   : bottomBarActions
 ---
 
@@ -70,7 +70,7 @@ const visibleBottomBarActions = hideSidebar
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:type" content={type} />
-    <meta property="og:site_name" content="Compound — money notes for India" />
+    <meta property="og:site_name" content="COMPOUND · finance terminal" />
     {ogImage && <meta property="og:image" content={ogImage} />}
     {type === 'article' && pubDate && (
       <meta property="article:published_time" content={pubDate.toISOString()} />
@@ -139,12 +139,12 @@ const visibleBottomBarActions = hideSidebar
     )}
   </head>
   <body>
-    <FamilyChrome slug="oriz-pages-blog-finance" title="Compound" accent="var(--accent)" />
+    <FamilyChrome slug="oriz-pages-blog-finance" title="Compound Terminal" accent="var(--accent)" />
     <a href="#main" class="skip-link">Skip to content</a>
     <Header />
     <div class="layout-body">
-      {!hideSidebar && <Sidebar><AppSidebarContent /></Sidebar>}
       <main id="main"><slot /></main>
+      {!hideSidebar && <Sidebar position="right" width="300px"><WatchlistRail /></Sidebar>}
     </div>
     <Footer />
     <BottomBar actions={visibleBottomBarActions} />
@@ -161,7 +161,13 @@ const visibleBottomBarActions = hideSidebar
 </html>
 
 <style>
-  .layout-body { display: flex; gap: 0; align-items: flex-start; }
+  .layout-body {
+    display: flex;
+    gap: 0;
+    align-items: flex-start;
+    max-width: 1240px;
+    margin-inline: auto;
+  }
   .layout-body > main { flex: 1 1 auto; min-width: 0; }
   @media (max-width: 767px) {
     .layout-body { display: block; }

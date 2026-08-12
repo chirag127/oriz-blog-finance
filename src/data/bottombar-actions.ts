@@ -1,9 +1,9 @@
 import type { BottomBarAction } from '~/components/chrome/BottomBar.astro'
 
 export const bottomBarActions: BottomBarAction[] = [
-  { icon: 'home', label: 'Home', href: '/' },
-  { icon: 'read', label: 'Latest', href: '/blog/' },
-  { icon: 'series', label: 'Series', href: '/series/' },
+  { icon: 'desk', label: 'Desk', href: '/' },
+  { icon: 'blotter', label: 'Blotter', href: '/blog/' },
+  { icon: 'pos', label: 'Positions', href: '/series/' },
   { icon: 'find', label: 'Search', href: '/search/' },
-  { icon: 'menu', label: 'Menu', href: '#sb-toggle' },
+  { icon: 'watch', label: 'Watchlist', href: '#sb-toggle' },
 ]

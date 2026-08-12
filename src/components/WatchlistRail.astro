@@ -1,0 +1,146 @@
+---
+/*
+ * WatchlistRail — persistent right rail for the terminal layout.
+ *
+ * Renders three terminal panels:
+ *   POSITIONS  — in-progress series as open positions (part n/total).
+ *   SECTORS    — categories as sector weights (count = "size").
+ *   TAPE       — most recent notes as a compact fill log.
+ *
+ * Pure presentation over the same blog helpers the homepage uses; no new data
+ * model. Collapses into the shared mobile drawer via #site-sidebar host.
+ */
+import SeriesSpine from '~/components/SeriesSpine.astro'
+import {
+  getCategoriesWithCounts,
+  getPostsInSeries,
+  getPublishedPosts,
+  getSeriesWithCounts,
+  postVertical,
+  slugifyTag,
+} from '~/lib/blog'
+
+const seriesAll = (await getSeriesWithCounts()).slice(0, 4)
+const positions: { name: string; slug: string; published: number; total: number }[] = []
+for (const { series, count } of seriesAll) {
+  const parts = await getPostsInSeries(series)
+  const explicitMax = parts.reduce((mx, p) => {
+    const v = typeof p.data.part === 'number' ? p.data.part : Number(p.data.part)
+    return Number.isFinite(v) ? Math.max(mx, v) : mx
+  }, 0)
+  positions.push({
+    name: series,
+    slug: slugifyTag(series),
+    published: count,
+    total: Math.max(count, explicitMax, count + 1),
+  })
+}
+
+const sectors = (await getCategoriesWithCounts()).slice(0, 6)
+const sectorMax = Math.max(1, ...sectors.map((s) => s.count))
+
+const feed = (await getPublishedPosts()).slice(0, 6).map((p) => ({
+  href: `/blog/${p.id}`,
+  title: p.data.title,
+  date: p.data.pubDate.toISOString().slice(5, 10),
+  v: postVertical(p),
+}))
+const total = (await getPublishedPosts()).length
+---
+
+<div class="rail">
+  {positions.length > 0 && (
+    <section class="panel" aria-labelledby="rail-pos">
+      <h2 id="rail-pos" class="panel-h"><span class="panel-mark" aria-hidden="true">◆</span>Positions</h2>
+      <ul class="pos-list">
+        {positions.map((p) => (
+          <li class="pos">
+            <a href={`/series/${p.slug}/`} class="pos-link">
+              <span class="pos-name">{p.name}</span>
+              <span class="pos-fig">{p.published}<span class="pos-den">/{p.total}</span></span>
+              <span class="pos-spine"><SeriesSpine total={p.total} published={p.published} current={p.published} size="sm" /></span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  {sectors.length > 0 && (
+    <section class="panel" aria-labelledby="rail-sec">
+      <h2 id="rail-sec" class="panel-h"><span class="panel-mark" aria-hidden="true">▤</span>Sectors</h2>
+      <ul class="sec-list">
+        {sectors.map((s) => (
+          <li class="sec" data-v={s.category}>
+            <a href={`/categories/${slugifyTag(s.category)}/`} class="sec-link">
+              <span class="sec-name">{s.category}</span>
+              <span class="sec-count">{s.count}</span>
+              <span class="sec-bar" aria-hidden="true"><span class="sec-fill" style={`width:${Math.round((s.count / sectorMax) * 100)}%`}></span></span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  <section class="panel" aria-labelledby="rail-tape">
+    <h2 id="rail-tape" class="panel-h"><span class="panel-mark" aria-hidden="true">≡</span>Fill log</h2>
+    <ul class="tape-list">
+      {feed.map((f) => (
+        <li class="tp" data-v={f.v}>
+          <a href={f.href} class="tp-link">
+            <time class="tp-date">{f.date}</time>
+            <span class="tp-title">{f.title}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+    <a class="rail-all" href="/archive/">archive · {total} notes →</a>
+  </section>
+</div>
+
+<style>
+  .rail { display: flex; flex-direction: column; gap: 0; font-family: var(--font-mono); }
+  .panel { padding: 0.875rem 0 1rem; border-bottom: 1px solid var(--rule); }
+  .panel:last-child { border-bottom: 0; }
+  .panel-h {
+    display: flex; align-items: center; gap: 0.4rem;
+    margin: 0 0 0.75rem;
+    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--ink-mute); font-weight: 600;
+  }
+  .panel-mark { color: var(--gold); font-size: 10px; }
+
+  /* positions */
+  .pos-list, .sec-list, .tape-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.5rem; }
+  .pos-link { display: grid; grid-template-columns: 1fr auto; gap: 0.15rem 0.5rem; text-decoration: none; color: var(--ink); }
+  .pos-name { font-family: var(--font-display); font-size: 13px; font-weight: 600; letter-spacing: -0.01em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .pos-link:hover .pos-name { color: var(--accent); }
+  .pos-fig { font-size: 12px; color: var(--brand); font-weight: 600; text-align: right; }
+  .pos-den { color: var(--ink-mute); font-weight: 400; }
+  .pos-spine { grid-column: 1 / -1; margin-top: 0.15rem; }
+
+  /* sectors */
+  .sec { --v: var(--v-personal); }
+  .sec[data-v='Investing'], .sec[data-v='Markets'] { --v: var(--v-finance); }
+  .sec-link { display: grid; grid-template-columns: 1fr auto; align-items: baseline; gap: 0 0.5rem; text-decoration: none; color: var(--ink); }
+  .sec-name { font-size: 12px; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .sec-link:hover .sec-name { color: var(--accent); }
+  .sec-count { font-size: 11px; color: var(--ink-mute); text-align: right; }
+  .sec-bar { grid-column: 1 / -1; height: 3px; margin-top: 0.3rem; background: color-mix(in oklab, var(--rule) 70%, transparent); }
+  .sec-fill { display: block; height: 100%; background: var(--brand); }
+
+  /* tape / fill log */
+  .tp { --v: var(--v-personal); border-left: 2px solid var(--v); padding-left: 0.5rem; }
+  .tp[data-v='dev'] { --v: var(--v-dev); }
+  .tp[data-v='finance'] { --v: var(--v-finance); }
+  .tp[data-v='culture'] { --v: var(--v-culture); }
+  .tp[data-v='health'] { --v: var(--v-health); }
+  .tp-link { display: grid; grid-template-columns: auto 1fr; gap: 0.5rem; align-items: baseline; text-decoration: none; color: var(--ink); }
+  .tp-date { font-size: 10px; color: var(--ink-mute); }
+  .tp-title { font-size: 12px; line-height: 1.3; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .tp-link:hover .tp-title { color: var(--accent); }
+
+  .rail-all { display: inline-block; margin-top: 0.875rem; font-size: 10.5px; letter-spacing: 0.04em; color: var(--ink-mute); text-decoration: none; }
+  .rail-all:hover { color: var(--accent); }
+</style>
