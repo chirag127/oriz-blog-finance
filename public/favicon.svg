@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+  <title>Compound — money notes for India</title>
+  <rect width="32" height="32" rx="8" fill="#0f6b4f"/>
+  <path d="M6 24 C 13 23, 18 19, 26 8" fill="none" stroke="#c6952a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="26" cy="8" r="2.6" fill="#c6952a"/>
+  <circle cx="6" cy="24" r="1.8" fill="#e2efe8"/>
+</svg>

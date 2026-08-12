@@ -1,0 +1,240 @@
+/*
+ * tokens.css — "Compounding" identity for the finance blog (finance-blog.oriz.in).
+ *
+ * DISTINCT from oriz-blog "Signal Press" (amber/serif newspaper) and from the
+ * sister oriz.in indigo/Inter apps. Subject-grounded for Indian retail
+ * investors: a ledger-paper surface, a deep trustworthy money-green, and a
+ * single gold "compounding" accent spent on the signature growth curve.
+ *
+ *   Warm ledger paper · deep money-green ink · gold compounding accent ·
+ *   Fraunces display · IBM Plex Sans body · IBM Plex Mono tabular numerals.
+ *
+ * Every --color-* alias is preserved so chrome/legal/Footer components (which
+ * read the shell token names) compile unchanged. Theme modes:
+ *   :root                              → light ledger (default)
+ *   @media (prefers-color-scheme:dark) → dark ledger, UNLESS [data-theme="light"]
+ *   [data-theme="dark"]                → dark ledger, always
+ *   [data-theme="sepia"]               → warm statement-paper variant
+ *   [data-theme="hc"]                  → pure black/white high contrast
+ */
+:root {
+  color-scheme: light;
+
+  /* ── light ledger palette ──────────────────────────────────────────────
+     Warm off-white statement paper, deep forest-ink text, deep money-green
+     brand (trust, not neon), gold compounding accent (the one bold note). */
+  --brand: #0f6b4f; /* deep money-green — links, active, primary */
+  --brand-soft: #e2efe8; /* pale green tint — hover, chips */
+  --gold: #c6952a; /* compounding accent — the curve, coins, milestones */
+  --gold-soft: #f4ead1; /* pale gold wash */
+  --success: #0f6b4f;
+  --danger-color: #c0392b; /* ledger red — losses */
+
+  --paper: #fbfaf7; /* warm statement paper (page bg) */
+  --paper-2: #f4f2eb; /* elevated ledger card / surface */
+  --surface: var(--paper-2);
+  --ink: #14201c; /* deep forest ink text */
+  --ink-mute: #5f6d66; /* secondary green-grey */
+  --rule: #e3e0d8; /* warm paper hairlines */
+  --rule-strong: #cfcabd; /* heavier ledger rule */
+
+  /* canonical accent routes through --accent (the green). --gold is separate,
+     reserved for the compounding signature so it never dilutes. */
+  --accent: var(--brand);
+  --accent-soft: var(--brand-soft);
+  --cobalt: var(--accent); /* back-compat alias */
+  --brand-tint: var(--brand-soft);
+  --sage: var(--success);
+  --vermilion: var(--danger-color);
+  --highlighter: var(--gold);
+
+  /* content-vertical marker colours — money-desk palette. Thin rules / kicker
+     dots only, never the page accent. Invest · Markets · Save · Credit. */
+  --v-dev: #0f6b4f; /* invest desk (green) */
+  --v-finance: #c6952a; /* markets desk (gold) */
+  --v-culture: #2f7d8c; /* save desk (teal) */
+  --v-health: #8c5a2f; /* credit desk (bronze) */
+  --v-personal: #5f6d66; /* general */
+
+  /* semantic passthroughs */
+  --color-bg: var(--paper);
+  --color-fg: var(--ink);
+  --color-accent: var(--brand);
+  --color-accent-fg: #fbfaf7;
+  --color-sage: var(--success);
+  --color-muted: var(--ink-mute);
+  --color-border: var(--rule);
+  --color-bg-soft: var(--paper-2);
+  --color-bg-muted: var(--paper-2);
+  --color-prose: var(--ink);
+  --color-fg-muted: var(--ink-mute);
+  --color-fg-soft: var(--ink-mute);
+
+  /* color alias layer (chrome components read these) */
+  --color-brand-indigo: var(--brand); /* name kept for compatibility */
+  --color-brand-indigo-soft: var(--brand-soft);
+  --color-brand-success: var(--success);
+  --color-brand-danger: var(--danger-color);
+  --color-neutral-0: #fbfaf7;
+  --color-neutral-50: #f4f2eb;
+  --color-neutral-100: #ece9df;
+  --color-neutral-200: #e3e0d8;
+  --color-neutral-300: #cfcabd;
+  --color-neutral-500: #5f6d66;
+  --color-neutral-700: #35443d;
+  --color-neutral-900: #14201c;
+  --color-neutral-1000: #0a100e;
+  --color-paper: var(--paper);
+  --color-paper-2: var(--paper-2);
+  --color-ink: var(--ink);
+  --color-ink-mute: var(--ink-mute);
+  --color-rule: var(--rule);
+
+  /* ── type ───────────────────────────────────────────────────────────
+     Font families declared ONCE, in global.css @theme. Not duplicated here. */
+
+  --text-2xs: 10px;
+  --text-xs: 11px;
+  --text-sm: 13px;
+  --text-base: 15px;
+  --text-md: 17px;
+  --text-lg: 20px;
+  --text-xl: 24px;
+  --text-2xl: 32px;
+  --text-3xl: 48px;
+
+  /* spacing — 8 steps */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* motion — 3 durations + 3 easings */
+  --dur-fast: 120ms;
+  --dur-base: 200ms;
+  --dur-slow: 360ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* breakpoints */
+  --bp-sm: 480px;
+  --bp-md: 768px;
+  --bp-lg: 1024px;
+  --bp-xl: 1440px;
+
+  /* radii + containers — soft ledger corners (not zero-radius newspaper) */
+  --radius-card: 10px;
+  --radius-button: 8px;
+  --container-page: 1100px;
+}
+
+/* ── DARK — system preference, unless user forced light ─────────────── */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+    --brand: #3ecf8e; /* brightened money-green for dark */
+    --brand-soft: #12261e;
+    --gold: #e0b352;
+    --gold-soft: #2a2214;
+    --success: #3ecf8e;
+    --danger-color: #f07167;
+    --paper: #0c1512; /* deep ledger-dark surface */
+    --paper-2: #12201b; /* elevated dark ledger card */
+    --ink: #e7efe9; /* soft near-white */
+    --ink-mute: #8ba095;
+    --rule: #1e2f28;
+    --rule-strong: #2c4238;
+    --v-dev: #3ecf8e;
+    --v-finance: #e0b352;
+    --v-culture: #5cc0d1;
+    --v-health: #d59a5f;
+    --v-personal: #8ba095;
+    --color-accent-fg: #0c1512;
+    --color-neutral-50: #12201b;
+    --color-neutral-100: #16281f;
+    --color-neutral-200: #1e2f28;
+    --color-neutral-300: #2c4238;
+    --color-neutral-500: #8ba095;
+    --color-neutral-700: #c2d2c9;
+    --color-neutral-900: #e7efe9;
+  }
+}
+
+/* ── DARK — explicit user override, wins over system ────────────────── */
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --brand: #3ecf8e;
+  --brand-soft: #12261e;
+  --gold: #e0b352;
+  --gold-soft: #2a2214;
+  --success: #3ecf8e;
+  --danger-color: #f07167;
+  --paper: #0c1512;
+  --paper-2: #12201b;
+  --ink: #e7efe9;
+  --ink-mute: #8ba095;
+  --rule: #1e2f28;
+  --rule-strong: #2c4238;
+  --v-dev: #3ecf8e;
+  --v-finance: #e0b352;
+  --v-culture: #5cc0d1;
+  --v-health: #d59a5f;
+  --v-personal: #8ba095;
+  --color-accent-fg: #0c1512;
+  --color-neutral-50: #12201b;
+  --color-neutral-100: #16281f;
+  --color-neutral-200: #1e2f28;
+  --color-neutral-300: #2c4238;
+  --color-neutral-500: #8ba095;
+  --color-neutral-700: #c2d2c9;
+  --color-neutral-900: #e7efe9;
+}
+
+/* ── SEPIA — warm statement-paper, deeper gold accent ───────────────── */
+:root[data-theme='sepia'] {
+  color-scheme: light;
+  --brand: #0c5a42;
+  --brand-soft: #e6e0cd;
+  --gold: #a9781f;
+  --gold-soft: #efe2c4;
+  --paper: #f3ecd9;
+  --paper-2: #ebe2ca;
+  --ink: #2c2a22;
+  --ink-mute: #6e6650;
+  --rule: #ddd2b6;
+  --color-accent-fg: #f3ecd9;
+  --color-fg-soft: color-mix(in oklab, var(--ink) 55%, var(--paper));
+  --color-neutral-50: #f3ecd9;
+  --color-neutral-100: #ebe2ca;
+  --color-neutral-200: #ddd2b6;
+  --color-neutral-500: #6e6650;
+  --color-neutral-700: #4d4736;
+  --color-neutral-900: #2c2a22;
+}
+
+/* ── HIGH-CONTRAST — pure black/white, hard borders ─────────────────── */
+:root[data-theme='hc'] {
+  color-scheme: light;
+  --brand: #005c3c;
+  --brand-soft: #d7f0e4;
+  --gold: #7a5600;
+  --gold-soft: #f2e6c4;
+  --paper: #ffffff;
+  --paper-2: #ffffff;
+  --ink: #000000;
+  --ink-mute: #26302b;
+  --rule: #000000;
+  --color-accent-fg: #ffffff;
+  --color-fg-soft: #26302b;
+  --color-neutral-50: #ffffff;
+  --color-neutral-100: #ffffff;
+  --color-neutral-200: #000000;
+  --color-neutral-500: #26302b;
+  --color-neutral-700: #000000;
+  --color-neutral-900: #000000;
+}

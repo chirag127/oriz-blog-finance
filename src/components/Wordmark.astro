@@ -1,0 +1,140 @@
+---
+/*
+ * Wordmark — "Compound" set in Fraunces display, with a gold compounding
+ * micro-curve rising through the wordmark — the growth line rendered as the
+ * brand mark (the finance-blog signature, scaled down).
+ *
+ * Each oriz site owns its type/palette + signature; on the finance blog the
+ * mark is the money-green serif "Compound" with a gold rising curve.
+ */
+
+interface Props {
+  /** Sub-section name — rendered after a `/` separator. */
+  subtitle?: string
+  /** Display size in CSS pixels. */
+  size?: number
+  /** Wrap the mark in an <a href="/"> — defaults to '/' when subtitle is set. */
+  href?: string | null
+  /** Render as <h1> (the masthead) rather than <div>. */
+  asHeading?: boolean
+}
+
+const { subtitle, size = 96, href = null, asHeading = false } = Astro.props
+const Tag = asHeading ? 'h1' : ('div' as const)
+---
+
+{
+  href ? (
+    <a
+      class="wordmark-link"
+      href={href}
+      aria-label={subtitle ? `Compound / ${subtitle}` : 'Compound'}
+    >
+      <Tag class="wordmark" style={`--wm-size: ${size}px;`}>
+        <span class="wordmark-mark">
+          Compound
+          <svg
+            class="wordmark-curve"
+            viewBox="0 0 120 40"
+            aria-hidden="true"
+            preserveAspectRatio="none"
+            focusable="false"
+          >
+            <path d="M2 34 C 40 32, 74 26, 118 6" />
+            <circle cx="118" cy="6" r="3.4" />
+          </svg>
+        </span>
+        {subtitle && (
+          <>
+            <span class="wordmark-sep" aria-hidden="true">
+              /
+            </span>
+            <span class="wordmark-sub">{subtitle}</span>
+          </>
+        )}
+      </Tag>
+    </a>
+  ) : (
+    <Tag class="wordmark" style={`--wm-size: ${size}px;`}>
+      <span class="wordmark-mark">
+        Compound
+        <svg
+          class="wordmark-curve"
+          viewBox="0 0 120 40"
+          aria-hidden="true"
+          preserveAspectRatio="none"
+          focusable="false"
+        >
+          <path d="M2 34 C 40 32, 74 26, 118 6" />
+          <circle cx="118" cy="6" r="3.4" />
+        </svg>
+      </span>
+      {subtitle && (
+        <>
+          <span class="wordmark-sep" aria-hidden="true">
+            /
+          </span>
+          <span class="wordmark-sub">{subtitle}</span>
+        </>
+      )}
+    </Tag>
+  )
+}
+
+<style>
+  .wordmark-link {
+    display: inline-block;
+    color: inherit;
+    text-decoration: none;
+  }
+  .wordmark {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.28em;
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: var(--wm-size, 96px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .wordmark-mark {
+    position: relative;
+    display: inline-block;
+    padding-top: 0.28em;
+  }
+  .wordmark-curve {
+    position: absolute;
+    left: -0.02em;
+    right: -0.06em;
+    top: -0.02em;
+    width: calc(100% + 0.08em);
+    height: 0.5em;
+    overflow: visible;
+    pointer-events: none;
+  }
+  .wordmark-curve path {
+    fill: none;
+    stroke: var(--gold);
+    stroke-width: 5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+  }
+  .wordmark-curve circle {
+    fill: var(--gold);
+  }
+  .wordmark-sep {
+    margin-inline: 0.14em;
+    color: var(--ink-mute);
+    font-weight: 400;
+  }
+  .wordmark-sub {
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 0.62em;
+    letter-spacing: 0.02em;
+  }
+</style>
