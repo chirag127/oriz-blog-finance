@@ -1,0 +1,98 @@
+---
+title: "Can you pull your own bank data programmatically in India? What I learned"
+description: "I wanted one dashboard of every bank account, P2P investment, and bank charge — fetched by code. Here is what the Account Aggregator framework actually allows an individual to do, why there is no consumer API, and the only paths that work."
+pubDate: 2026-08-13
+category: "Tools"
+tags: ["account-aggregator", "fiu", "banking", "api", "india", "personal-finance", "p2p-lending", "fintech"]
+author: "Chirag Singhal"
+---
+
+I hold accounts at seventeen banks. I wanted one honest number — my real net
+worth — and one honest list — every fee each bank quietly deducts. The obvious
+engineer's instinct: fetch it all with code, put it in one dashboard, done.
+
+It is not that simple. Here is what I found after digging through the Account
+Aggregator framework, testing what an aggregator app actually returns, and
+emailing a pile of banks and platforms.
+
+## The short answer
+
+**There is no consumer API for your own bank statements in India.** You cannot,
+as an individual, sign up somewhere and pull your transactions with an API key.
+The rail that exists — the RBI **Account Aggregator (AA)** network — is real,
+works well, and moves statement-level data programmatically. But it only
+delivers that data to an onboarded **FIU** (Financial Information User), which is
+a registered business entity, not a person.
+
+## How the Account Aggregator framework works
+
+Three roles:
+
+- **FIP** (Financial Information Provider) — your bank. Holds the data.
+- **AA** (Account Aggregator) — the consent rail. Setu, Finvu, OneMoney,
+  Anumati, CAMS Finserv, NADL. It never stores your data; it moves it,
+  encrypted, only when you consent.
+- **FIU** (Financial Information User) — the app that *requests* your data to
+  show you something useful. This is the role you'd need to fetch statements.
+
+The flow: you consent inside an AA app → the AA asks your bank (FIP) → the bank
+returns your data → it lands with the FIU. With the right consent scope, that
+data includes **full transactions**, not just a balance.
+
+## Why you personally can't just use it
+
+To fetch real data in production, you onboard as an **FIU** with an AA operator
+and pass their review. FIUs are organisations building a regulated product —
+lending, PFM, verification. There is a **sandbox** any developer can test in,
+but sandbox returns fake data. There is no path where a lone individual gets
+production access to their own accounts. I checked Setu, Finvu, OneMoney,
+Anumati and CAMS Finserv — same answer everywhere.
+
+## So what actually works
+
+Realistic options, from least to most effort:
+
+1. **Use an FIU app that already does it.** Apps like INDmoney are registered
+   FIUs. Link your banks once and they aggregate balances across all of them via
+   AA. This is the only zero-code path — you ride someone else's FIU licence.
+2. **Parse your own statement PDFs.** The only solo-developer route. Download
+   each bank's statement, extract transactions with code. Fragile per-bank, but
+   compliant and entirely yours.
+3. **Become / partner with an FIU.** Only worth it if you're building a real
+   product for other users, not a personal dashboard.
+
+Screen-scraping the bank's website is the tempting fourth option. Skip it — it
+breaks on every UI change and usually violates the bank's terms.
+
+## The gaps I hit — even with a working FIU
+
+Riding an FIU app gets you most of the way, but two real limits surfaced:
+
+- **Balances, not transactions.** The AA spec carries transactions, but the app
+  I use surfaces only the current balance per linked account. So I can see *what*
+  I hold, not *what was charged*. Spotting a wrongful SMS fee or minimum-balance
+  penalty across seventeen banks? Not possible from balances alone.
+- **P2P lending is invisible.** Money lent on RBI-registered NBFC-P2P platforms
+  (i2iFunding, LendenClub, Lendbox, Faircent, and others) doesn't flow through
+  AA at all — those platforms aren't FIPs. So a genuine asset class is missing
+  from every net-worth view. The fix has to come from the platforms joining AA
+  as FIPs, or exposing consented read APIs.
+
+## What I'm doing about it
+
+Two fronts. I've asked my aggregator to **surface AA transactions, not just
+balances**, and to add a **charges view** that flags every fee each bank
+deducts. And I've asked the P2P platforms to **join the AA network as FIPs** so
+lending balances finally show up alongside everything else.
+
+Until then the honest setup is: one FIU app for balances, PDF parsing for the
+transaction detail it won't show, and manual entry for P2P. Not elegant. But
+it's the truth of what's possible for an individual in India today.
+
+## The takeaway
+
+The plumbing for a single, code-fetched view of your entire financial life
+exists. The consent framework is genuinely good. What's missing is the last
+mile for individuals: no consumer API, transaction data often withheld even by
+FIU apps, and whole asset classes (P2P) outside the network. If you only need
+your own data, PDF parsing plus a good FIU app is as far as you can go — for now.
