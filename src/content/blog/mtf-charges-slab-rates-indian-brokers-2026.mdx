@@ -1,6 +1,6 @@
 ---
 title: "MTF interest charges in India (2026): every broker's slab rates, compared"
-description: "The headline '5.99%' MTF rate is a trap — it only applies to the first Rs 1 lakh you borrow. Here is what every major Indian broker actually charges, slab by slab, with the real cost of holding on margin."
+description: "The headline '5.99%' MTF rate is a trap — it only applies to the first Rs 1 lakh you borrow. Here is what every major Indian broker actually charges, slab by slab, with the real cost of holding on margin, plus the SEBI rules that govern it."
 pubDate: 2026-08-13
 category: "Invest"
 tags: ["mtf", "margin-trading", "brokers", "leverage", "india", "stock-market", "charges"]
@@ -9,75 +9,224 @@ author: "Chirag Singhal"
 
 Margin Trading Facility (MTF) lets you buy more stock than your cash allows: you
 put up part of the purchase (your margin), the broker funds the rest, you take
-actual delivery of the shares, and those shares sit pledged with the broker as
-collateral. You pay **daily interest on the borrowed portion** until you sell or
-repay. Unlike intraday, you can hold for weeks or months.
+**actual delivery** of the shares, and those shares sit pledged with the broker
+as collateral. You pay **daily interest on the borrowed portion** until you sell
+or repay. Unlike intraday, where you must square off the same day, an MTF
+position can be held for weeks or months — for as long as you keep the margin
+topped up and keep paying the interest.
 
 The interest rate is the number that decides whether MTF is a tool or a slow
 leak. And it is the number brokers work hardest to blur. Almost every "MTF from
-5.99%" or "from 7.99%" banner is a **teaser that applies only to the smallest
-slab — usually the first Rs 1 lakh you borrow**. Cross that line and the rate on
-the rest jumps to 12–16% a year. This post lays out the actual per-broker slabs,
-so you can see exactly what you would pay.
+**5.99%**", "from **7.99%**", or "**9.69%** p.a." banner is a **teaser** — it
+applies only to the smallest borrowing slab (usually your first Rs 1 lakh), or
+only if you buy the broker's most expensive paid plan. Cross that line, or use
+the default plan, and the rate on the rest of your borrowing jumps to
+**12.49% – 18% a year**, and sometimes higher.
 
-## How MTF interest actually works
+This post lays out the actual per-broker slabs — grouped by broker type, with a
+master at-a-glance table — so you can see exactly what you would pay on a real
+position. It also covers the SEBI rules that govern MTF (the initial margin is
+**not** a flat 50%, contrary to what most explainers say), how the interest is
+computed day by day, the full cost stack beyond interest, the tax treatment, and
+the risks that make this a facility for experienced investors only.
 
-The mechanics are consistent across brokers, and understanding them is half the
-battle.
+**Everything here is time-sensitive.** All broker rates are as of **13 August
+2026** and change frequently — several changed in the weeks before this was
+written. Always confirm the live number on the broker's own page before you act.
+Rates listed as "not independently verified" should be treated as leads to
+check, not facts to rely on.
 
-- **Charged daily, on the borrowed amount only.** Interest is calculated on the
-  funded (broker-lent) portion — not on your own margin, and not on the full
-  trade value.
-- **Simple interest, debited monthly.** The standard is simple interest:
-  `Daily interest = Funded Amount × Annual Rate ÷ 365`. It accrues every calendar
-  day (weekends and holidays included) while the position is open, and is
-  typically **posted to your ledger monthly**. "Monthly debit" does **not** mean
-  monthly compounding — it just means the month's accumulated simple interest is
-  booked together.
-- **Accrues from T+1.** Interest starts the day after the exchange pay-in (when
-  delivery settles) and runs until the day before your sale settles.
+## The teaser trap, in one paragraph
 
-**Worked example.** Borrow Rs 1,00,000 at 12% p.a. and hold for 90 days:
+Here is the whole game. A broker advertises "MTF from 5.99%". That 5.99% is the
+rate on the **first Rs 1 lakh** you borrow — and only there. Borrow Rs 3 lakh and
+the top Rs 2 lakh is charged at the next band, often around **14.6%**. Your
+blended rate lands near 11–12%, not 5.99%. Other brokers instead reserve the low
+rate for a **paid subscription plan** (Kotak Neo's and ICICIdirect's ~**9.69%**
+are top-plan rates; the default is **17.99%**). And a few, like **Fyers**, invert
+the whole thing — the rate *drops* as you borrow more, so the cheap number is for
+large books, not small ones. The advertised rate and the rate you pay are almost
+never the same. The rest of this post is the detail behind that sentence.
+
+## How MTF works: the SEBI framework
+
+MTF is not a broker invention you take on trust — it runs inside a defined SEBI
+framework, laid out in the **SEBI Master Circular for Stock Brokers** and the
+exchanges' risk-management rules. Understanding the guardrails tells you what the
+broker can and cannot do to your position.
+
+### Eligible securities: Group I only
+
+Only **equity shares and equity ETF units classified as "Group I"** are eligible
+for MTF. Group I is the exchange's classification for the most liquid, lowest-risk
+scrips — broadly, securities that trade on **at least 80% of trading days** with
+an **impact cost of 1% or less**. Illiquid stocks, penny stocks, and anything
+outside Group I cannot be bought on margin.
+
+One nuance worth stating honestly: the **lookback window** for that liquidity
+test has been revised over the years. SEBI's original 2004 margin-trading wording
+referenced an 18-month history; the current Comprehensive Risk Management
+framework (updated October 2023) uses a **rolling six-month** assessment. The
+practical point is the same either way — MTF eligibility tracks the **exchange's
+Group I liquidity criteria**, and if a stock falls out of Group I, its MTF
+eligibility is affected. Brokers publish their own list of MTF-approved scrips
+(each broker's list is a subset of Group I), and it is updated periodically. Check
+the current list before assuming a stock is fundable.
+
+### Initial margin: it is NOT a flat 50%
+
+This is the single most-repeated error in MTF explainers, so read it carefully.
+
+The regulatory **initial margin** for an MTF position is **not** a flat 50%. It
+is **risk-based and scrip-specific**, driven by the cash-segment VaR (Value at
+Risk) and ELM (Extreme Loss Margin) of the individual stock. Per the framework
+set out in the SEBI Master Circular (the structure summarised in **Table 10** of
+the June 2026 consultation paper on the MTF review):
+
+| Security type | Applicable initial margin |
+| --- | --- |
+| Group I stocks **available in the F&O segment** | **VaR + 3 × ELM** |
+| Group I stocks **not** in F&O, and **equity ETF units** | **VaR + 5 × ELM** |
+
+Here **VaR** and **ELM** are the cash-segment values for that specific stock. So
+a liquid, F&O-eligible large cap carries a lower margin than a Group-I mid cap
+that is not in F&O. The effective margin varies by scrip and by day, and for many
+non-F&O names it lands **well above 50%** once you add VaR and five times ELM.
+
+Where does "50%" come from, then? It is a **separate rule about the composition
+of collateral**, not the entry margin — broadly, the requirement around how much
+of the maintained margin must be in cash or cash-equivalent form versus pledged
+securities. It is not the amount you must put down to open the trade. Conflating
+the two is what produces the "MTF needs 50% margin" myth.
+
+(A note on the 5× figure: the multiplier applies within the current
+"funded-stock-as-margin" structure formalised in SEBI's September 2024 changes,
+and is presented here as the framework described in the June 2026 consultation
+Table 10. Because the framework is under active review — see below — treat the
+exact multiplier as current-as-of-writing rather than permanent.)
+
+### Pledge, mark-to-market, margin call, square-off
+
+Once the trade settles, a strict custody-and-risk cycle kicks in:
+
+- **The funded shares are pledged.** The stock you bought on margin is pledged in
+  the broker's favour via **CDSL/NSDL** and held **identifiable and free of
+  co-mingling** — your MTF stock cannot be pooled indistinguishably with other
+  clients' or the broker's own holdings.
+- **Marked to market daily.** The pledged position is revalued every trading day
+  against the current price.
+- **Margin call on a shortfall.** If the value falls and your maintained margin
+  drops below the required level, the broker issues a **margin call** asking you
+  to add funds or securities.
+- **Liquidation strictly per the RODoc.** If you do not meet the call, the broker
+  can **square off (forced-sell)** the pledged shares — but only in the manner set
+  out in the **Rights and Obligations Document (RODoc)** you signed, the terms of
+  which are mandated by the SEBI Master Circular (Section 39). The RODoc governs
+  when and how liquidation happens; it is not at the broker's arbitrary whim.
+
+### The SEBI June 2026 consultation (proposed, not final)
+
+In June 2026, SEBI floated a **consultation paper reviewing the MTF framework**.
+As of writing it is **a proposal, not a rule** — none of the following is in
+force yet:
+
+- Raising the **minimum broker net worth** to offer MTF from **Rs 3 crore to
+  Rs 5 crore**.
+- Allowing brokers to **fund MTF via NCDs** (non-convertible debentures) as a
+  funding source.
+- **Expanding the eligible collateral** that can be used to maintain MTF margin.
+
+Watch for the final circular before assuming any of this applies. Until then, the
+framework in the sections above is what governs your position.
+
+## How the interest is computed
+
+The interest mechanics are consistent across brokers, and they are simpler than
+the marketing makes them look.
+
+- **Charged only on the funded (borrowed) amount.** The base is the money the
+  broker actually lent you — that is **trade value minus your own margin** — not
+  the full purchase value, and never on your own contribution.
+- **Accrues every calendar day, including weekends and holidays.** Interest runs
+  from **T+1** (the day after the exchange pay-in, when delivery settles) until the
+  position is squared off or sold. Saturdays, Sundays, and market holidays all
+  accrue — the loan does not take weekends off.
+- **Simple interest, typically debited monthly.** The formula is:
+
+  `Interest = Funded Amount × Annual Rate × Days ÷ 365`
+
+  "Debited monthly" means the month's accumulated simple interest is posted to
+  your ledger together — it does **not** mean monthly compounding. (Some brokers
+  post it weekly; the accrual is still daily and simple.)
+
+### Worked examples
+
+**Example 1 — Rs 80,000 funded at 18% p.a. for 30 days:**
+
+- 80,000 × 18% × 30 ÷ 365 = **Rs 1,183** for the month.
+
+**Example 2 — Rs 1,00,000 funded at 12% p.a. for 90 days:**
 
 - Daily interest = 1,00,000 × 12% ÷ 365 = **Rs 32.88/day**
-- 90 days = 32.88 × 90 = **Rs 2,958.90** total
-- Debited monthly, that is roughly Rs 986/month on the same principal — no
-  compounding.
+- 90 days = 32.88 × 90 = **Rs 2,959** total (about Rs 986/month, no compounding).
 
-### The regulatory guardrails (SEBI)
+**Example 3 — Rs 2,00,000 funded at 14.6% p.a. for 1 year:**
 
-- **Only Group I securities** are MTF-eligible — equity shares and equity ETFs
-  classified as Group I. The exact list is published and updated periodically by
-  the exchanges (NSE/BSE). If a stock drops out of Group I, its MTF eligibility
-  is affected.
-- **Margin is exchange-set, not a flat 50%.** The client must fund at least
-  **50% initial margin** under the original framework, with **40% maintenance
-  margin**. But the true requirement is scrip-specific: Group I F&O stocks need
-  VaR + 3×ELM; Group I non-F&O stocks and ETFs need VaR + 5×ELM — so effective
-  margin varies by stock and can exceed 50%.
-- **Pledge in the depository (T+1).** Funded shares must be pledged in the
-  broker's favour via CDSL/NSDL to count as maintenance margin. Members report
-  MTF exposure by 6:00 PM on T+1.
-- **Mark-to-market, margin call, square-off.** Positions are marked-to-market
-  daily. If your margin falls below the maintenance level, the broker must issue
-  a **margin call**; if you do not top up, it can **forced-sell (square off)**
-  the pledged shares — often at the worst possible moment.
-- SEBI floated a **2026 consultation paper reviewing the MTF framework**
-  (proposals to rationalise margin requirements), so some of this is under
-  review.
+- 2,00,000 × 14.6% = **Rs 29,200** for the year (about Rs 80/day).
 
-## The main event: per-broker slab rates
+The takeaway from Example 3: at a mid-band rate, **your stock has to rise roughly
+15% in a year just to cover the interest** on the borrowed portion — before any
+brokerage, pledge, or statutory charges. That is the hurdle every MTF thesis has
+to clear.
 
-Rates below are annual (p.a.), charged daily on the borrowed amount. Read the
-**band** carefully — the cheap rate almost always applies only to a small first
-slab.
+## Per-broker slab rates
 
-### Slab / low-teaser brokers
+Rates below are annual (p.a.), charged daily on the borrowed amount, **as of 13
+August 2026**. Read the **band** carefully — the cheap rate almost always applies
+only to a small first slab or a paid plan. Brokers are grouped by the *shape* of
+their pricing.
 
-These lead with a very low headline rate that applies only to the first slice of
-borrowing. The real rate for a typical retail position sits far higher.
+### Group A — flat-rate discount brokers
 
-**Pocketful** — headline "5.99%"
+No slabs, no volume games. One rate on every rupee borrowed.
+
+**Zerodha — flat 0.04%/day = 14.6% p.a.**
+
+Zerodha's MTF interest is a **flat 0.04% per day, which annualises to exactly
+14.6% p.a.** on the funded amount. There is **no slab, no volume discount, and no
+teaser** — you pay the same rate whether you borrow Rs 10,000 or Rs 10 lakh. It is
+one of the most transparent structures in the market.
+
+| Item | Charge |
+| --- | --- |
+| Interest | **0.04%/day = 14.6% p.a.** (flat, on funded amount) |
+| MTF brokerage | Lower of **0.3% or Rs 20** per executed order |
+| Pledge / unpledge | **Rs 15 + GST** per ISIN |
+| Square-off charge | **Rs 50 + GST** per position |
+| Auto square-off trigger | If losses **exceed 20% of the funded amount** (hard cut around the 80% level) |
+
+That last line matters: Zerodha will auto square-off your position once mark-to-
+market losses eat through more than **20% of the funded amount** — a hard risk
+cut you should size positions around.
+
+**Angel One — 0.041%/day = 14.99% p.a.**
+
+Angel One charges **0.041% per day, annualising to 14.99% p.a.** on the funded
+amount, with leverage of **up to 4x**. Like Zerodha, it is a flat structure — the
+rate does not step down with volume.
+
+### Group B — tiered / teaser brokers
+
+These publish a ladder of slabs. Whether the ladder helps you depends entirely on
+its *direction* — some rise with borrowing (small positions cheap), some fall
+(large positions cheap), and one puts a tiny teaser on the first lakh.
+
+**Pocketful — headline "5.99%" (rising ladder, non-incremental)**
+
+Pocketful markets itself on "Lowest MTF Charges" and a **5.99%** teaser. The
+ladder rises, and — importantly — the slabs are **non-incremental**: the whole
+funded amount is charged at the band its total falls into, not sliced across
+bands.
 
 | Borrowing band | Annual rate | Daily rate |
 | --- | --- | --- |
@@ -85,42 +234,36 @@ borrowing. The real rate for a typical retail position sits far higher.
 | Rs 1,00,001 – Rs 25,00,000 | **14.60%** | 0.0400% |
 | Above Rs 25,00,000 | **16.00%** | 0.0438% |
 
-- **Max leverage:** up to 5x on 1,200+ stocks.
-- **Holding limit:** no fixed limit stated.
-- **The trap, spelled out:** 5.99% applies **only to the first Rs 1 lakh
-  borrowed**. The band most retail borrowers actually land in (Rs 1L–25L) is
-  **14.60% — about 2.4x the headline**, and above Rs 25L it is 16.00%. (An older
-  tariff PDF listed the lowest band as "up to Rs 50,000"; the live /mtf page
-  supersedes it with "up to Rs 1,00,000".)
+- **Max leverage:** up to 5x on a wide list of stocks.
+- **The trap, spelled out:** 5.99% applies **only if your total borrowing stays
+  under Rs 1 lakh**. Borrow Rs 1,00,001 and the **entire** amount is charged at
+  **14.60%** — about 2.4x the headline. Above Rs 25 lakh, the whole book is at
+  16.00%. Because the bands are non-incremental, crossing a threshold re-prices
+  everything, not just the excess.
 
-**Paytm Money** — headline "7.99%"
+**Fyers — tiered but INVERTED (rate drops as you borrow more)**
+
+Fyers is the mirror image of a teaser. Its rate **falls** as the borrowed amount
+rises — so the cheap number is for **large** books, not small ones. This
+structure took effect **2 June 2025**, replacing a prior flat 18%.
 
 | Borrowing band | Annual rate |
 | --- | --- |
-| Up to Rs 1 lakh | **7.99%** |
-| Rs 1 lakh – Rs 1 crore | **9.99%** |
-| Above Rs 1 crore | **8.99%** |
+| Up to Rs 1,000 | **0%** |
+| Rs 1,000 – Rs 1,00,000 | **16.49%** |
+| Rs 1,00,000 – Rs 10,00,000 | **15.49%** |
+| Rs 10,00,000 – Rs 25,00,000 | **14.49%** |
+| Above Rs 25,00,000 | **12.49%** |
 
-- **Max leverage:** roughly 4x / ~75–80% funded on approved MTF stocks (Paytm
-  does not headline a fixed multiple).
-- **Holding limit:** none stated — hold as long as margin is maintained.
-- **Other charges:** brokerage on MTF trades is **0.1% of trade value** (capped
-  at Rs 20 for trades below Rs 20,000). This replaced a prior flat 11.99% p.a.
-  structure. Slab-based pricing has been live since at least September 2025,
-  effective as published August 3, 2026.
-- **The trap, spelled out:** 7.99% applies **only to the up-to-Rs-1-lakh slab**.
-  The practical retail band (Rs 1L–1Cr) is **9.99%** — note this is actually
-  *higher* than the above-1-crore slab (8.99%). Paytm deliberately rewards very
-  large books; the mid-band is the expensive one. Even so, 9.99% is competitive
-  versus most peers, and Paytm's low MTF brokerage helps.
+- **The shape, spelled out:** the *most expensive* Fyers band is the small one
+  (16.49% for the first lakh above Rs 1,000). A large borrower crossing Rs 25 lakh
+  pays **12.49%** — one of the lower large-book rates here. Fyers rewards scale,
+  not small positions.
 
-### Discount brokers
+**Dhan — headline "12.49%" (rising ladder, honest shape)**
 
-**Dhan** — headline "12.49%"
-
-Dhan's ladder is the honest shape: the rate **rises** with the amount borrowed,
-so the lowest rate is the best case for the first Rs 5 lakh (not a Rs-1-lakh
-teaser).
+Dhan's ladder rises with the amount borrowed — the honest shape — so the lowest
+rate is the best case for the first Rs 5 lakh, not a Rs-1-lakh teaser.
 
 | Borrowing band | Annual rate | Daily rate |
 | --- | --- | --- |
@@ -130,219 +273,290 @@ teaser).
 | Rs 10,00,000 – Rs 25,00,000 | **14.49%** | 0.0397% |
 | Rs 25,00,000 – Rs 50,00,000 | **15.49%** | 0.0425% |
 
-- **Max leverage:** up to 4x on the official page (some 2026 coverage cites up to
-  5x). Total MTF limit up to Rs 5 crore; up to Rs 1 crore per individual stock.
-- **Holding limit:** unlimited. Interest runs from T+1 through the day before
-  sale settlement. Position is liquidated if holding coverage falls below 20%.
-- **Other charges:** interest calculated daily, posted weekly to the ledger.
-  1,700+ eligible stocks. You can convert an MTF position to plain delivery.
-- **Note:** Dhan's own published table stops at Rs 50 lakh. Third-party sources
-  report an "above Rs 50 lakh = 16.49%" tier, but since it is not in Dhan's own
-  table, treat it as **unconfirmed — confirm on Dhan's site** if you borrow that
-  much.
+- **Note on the top tier:** Dhan's own published table stops at Rs 50 lakh.
+  Secondary coverage reports an "above Rs 50 lakh = ~16.49%" sixth band, but since
+  it is not in Dhan's own table, treat it as **unconfirmed — confirm on Dhan's
+  site** if you borrow that much.
 
-**m.Stock (Mirae Asset)** — headline "from 8.99%"
+### Group C — full-service & bank-backed brokers
 
-m.Stock's cheapest rate sits on the *largest* band, and its most expensive rate
-covers the entire retail range — so the effective rate for a normal user is one
-of the highest here.
+Higher headline rates, softened by paid-plan discounts and bundled research,
+banking, and relationship support. The pattern is consistent: **high default,
+low only if you pay for a premium plan** — and the low number is the one they
+advertise.
 
-| Borrowing band | Annual rate |
-| --- | --- |
-| Up to Rs 25 lakh | **14.99%** |
-| Rs 25 lakh – Rs 5 crore | **9.99%** |
-| Above Rs 5 crore | **8.99%** |
+**ICICIdirect — default 17.99%, paid-plan teaser ~9.69%**
 
-- **Max leverage:** up to 80% funding on total trade value (you post 20% margin).
-- **Holding limit:** none specified — hold indefinitely while margin is
-  maintained. Delivery only (no intraday MTF). ~1,100 eligible stocks.
-- **Other charges:** pledge/unpledge Rs 32 per PSN (Pledge Sequence Number) per
-  day + GST for Pay Later orders. No MTF subscription fee (bundled with demat).
-- **The trap, spelled out:** "from 8.99%" applies **only above Rs 5 crore of
-  funding**. A normal retail user (borrowing under Rs 25 lakh) pays **14.99%
-  p.a.** — among the highest retail rates in this comparison. m.Stock's own note
-  says rates can vary by funding value and holding, so the slab is the governing
-  structure. (Article dated May 22, 2026.)
+ICICIdirect revised its MTF rates effective **21 August 2026**. Its interest is
+charged on the funded amount **plus** any Shares-as-Margin (SAM), daily including
+weekends.
 
-### Full-service & bank brokers
+| Plan | Old rate | New rate (eff. 21 Aug 2026) |
+| --- | --- | --- |
+| Prime (Rs 9,999) | 9.85% | **9.69%** |
+| Prime (Rs 4,999) | 9.85% | **10.99%** |
+| Prime (Rs 999) | — | **17.99%** (unchanged) |
+| **Default plan** | — | **17.99%** (unchanged) |
 
-Full-service and bank-backed brokers typically charge more but bundle research,
-relationship support, and integrated banking. Rates commonly run **default
-around 17.99% p.a., dropping toward ~9.85% only on top-tier paid plans**
-(ICICI Direct is the widely cited example: ~9.85% on its highest plan, 17.99% on
-the default). Because these plans and rates are plan-specific and change often,
-**confirm the exact slab on the broker's official page before relying on any
-number** — the pattern to expect is "high default, low only if you pay for a
-premium plan or carry a large book".
+- **The teaser, spelled out:** the ~9.69% is achievable only on the **Rs 9,999
+  Prime plan**. The **default plan pays 17.99%** — so the "as low as 9.69%"
+  headline is a paid-plan floor, not the standard rate.
 
-### Others
+**Kotak Neo — headline 9.69% p.a. under Trade Free Pro (paid-plan teaser)**
 
-Across the wider market in 2026, published MTF rates span roughly **9.85%–18%
-p.a.** depending on broker and plan. The shape of the slab matters as much as the
-headline: some brokers (Pocketful, Paytm Money) put the cheap rate on a tiny
-first slab; others (Dhan) raise the rate as you borrow more; and m.Stock inverts
-it, reserving the cheap rate for very large books.
+Kotak Neo advertises a **9.69% p.a.** headline available under its **Trade Free
+Pro** plan. Other plans are higher (for example around **14.99%**). Leverage runs
+**up to 4x** (roughly 25% investor / 75% funded), and interest is charged daily
+on the funded amount only. As with ICICIdirect, the 9.69% is a paid-plan floor —
+confirm which plan you are on.
 
-### At a glance: summary comparison
+**HDFC Securities — BSPL "Buy Stocks Pay Later" ~18% p.a. (up to 24%)**
 
-| Broker | Lowest-slab rate (and its band) | Typical rate above Rs 1–5 lakh | Notes |
-| --- | --- | --- | --- |
-| **Pocketful** | 5.99% (up to Rs 1L) | **14.60%** (Rs 1L–25L) | Steepest teaser; real rate ~2.4x headline. Up to 5x. |
-| **Paytm Money** | 7.99% (up to Rs 1L) | **9.99%** (Rs 1L–1Cr) | Best mid-band here; low 0.1% MTF brokerage. Big books get 8.99%. |
-| **Dhan** | 12.49% (Rs 500–5L) | **12.49% → 13.49%** (rises past Rs 5L) | Honest rising ladder; Nil under Rs 500. Table stops at Rs 50L. |
-| **m.Stock** | 8.99% (above Rs 5Cr) | **14.99%** (up to Rs 25L) | "From 8.99%" is only for Rs 5Cr+; retail pays 14.99%. |
-| Full-service / bank | ~9.85% (top plan only) | **~17.99%** (default) | Confirm plan-specific rate on the broker's site. |
+HDFC Securities offers MTF as **BSPL ("Buy Stocks Pay Later")**, charging roughly
+**0.05% per day, annualising to ~18% p.a.** on the outstanding amount, and **up to
+24% p.a.** where applicable. Leverage runs **up to 4x**. (Separately, HDFC Sky's
+related product is priced around **1% per month = ~12% p.a.** — a different
+structure under the same group, so check which one you are using.)
 
-The pattern is unmistakable: **for a normal retail position, Paytm Money's
-9.99% mid-band is the cheapest confirmed rate here**, followed by Dhan's rising
-ladder. The "5.99%" and "from 8.99%" headlines belong to bands almost no retail
-trader will use.
+### Brokers not independently verified this pass
+
+The following brokers offer MTF, but their current rates were **not
+independently verified** in this research pass. **Confirm on each broker's
+official page** — do not rely on the figures below without checking:
+
+- **Paytm Money** — earlier research indicated a **7.99%** teaser on the first
+  Rs 1 lakh, with higher bands above. Not verified this pass.
+- **Groww, Upstox, 5paisa, m.Stock (Mirae Asset), Alice Blue, Sharekhan, Motilal
+  Oswal, SBI Securities, Axis Direct, IIFL, Nuvama** — all offer MTF; current
+  rates not independently verified here.
+
+## At a glance: master comparison
+
+All rates as of **13 August 2026**; verify before acting. "True rate for Rs 1–5L"
+is the rate a typical retail borrower actually pays on a meaningful position (i.e.
+after the teaser slab).
+
+| Broker | Lowest rate (and its band/condition) | True rate for Rs 1–5L funded | Max leverage | Notes |
+| --- | --- | --- | --- | --- |
+| **Zerodha** | 14.6% (flat, all amounts) | **14.6%** | ~4x | Flat, no slab, fully transparent. Auto square-off at 20% funded-loss. |
+| **Angel One** | 14.99% (flat, all amounts) | **14.99%** | 4x | Flat structure, no volume discount. |
+| **Pocketful** | 5.99% (only ≤ Rs 1L) | **14.60%** | 5x | Steep teaser; non-incremental slabs re-price the whole book. |
+| **Fyers** | 12.49% (only > Rs 25L) | **15.49%** | — | Inverted ladder — cheap for large books, dear for small. Eff. Jun 2025. |
+| **Dhan** | 12.49% (Rs 500 – 5L) | **12.49%** | up to 4x | Honest rising ladder; Nil under Rs 500. Table stops at Rs 50L. |
+| **ICICIdirect** | 9.69% (Rs 9,999 Prime plan only) | **17.99%** (default) | — | Paid-plan floor; default is 17.99%. Eff. 21 Aug 2026. |
+| **Kotak Neo** | 9.69% (Trade Free Pro plan only) | **~14.99%** (other plans) | up to 4x | Paid-plan teaser; interest on funded only. |
+| **HDFC Securities** | ~18% (flat outstanding) | **~18%** (up to 24%) | up to 4x | BSPL product. HDFC Sky variant ~12% p.a. |
+
+The pattern is unmistakable. For a normal retail position of **Rs 1–5 lakh
+borrowed**, the cheapest **confirmed** rate here is **Dhan's 12.49%**, followed by
+Zerodha's flat 14.6%. The **5.99%** and **9.69%** headlines belong to bands or
+paid plans that almost no ordinary retail trader will actually use.
 
 ## The full cost stack beyond interest
 
-Interest is the biggest cost, but not the only one. The full stack:
+Interest is the biggest cost, but not the only one. Some charges are **broker-set**
+(they vary, and can be negotiated or shopped) and some are **statutory**
+(government/exchange-mandated, the same everywhere, unwaivable).
 
-**Broker-set (vary by broker/plan):**
+| Charge | Type | Rough level | Notes |
+| --- | --- | --- | --- |
+| MTF interest | Broker-set | 12.49% – ~18%+ p.a. | The dominant cost on any multi-week hold. |
+| MTF brokerage | Broker-set | e.g. Zerodha lower of 0.3% or Rs 20/order | Some free-delivery brokers charge little; this can tilt "cheapest". |
+| Pledge / unpledge | Broker-set (CDSL/NSDL) | **~Rs 15–20 + GST** per scrip per request | Charged per pledge event; adds up across many positions. |
+| DP charges on sell | Broker-set | Per-scrip fee on delivery sell | Applies when you sell the delivered shares. |
+| Square-off charge | Broker-set | e.g. Zerodha Rs 50 + GST | On broker-initiated liquidation. |
+| **STT** | **Statutory** | On delivery buy & sell | Securities Transaction Tax — unwaivable. |
+| **Stamp duty** | **Statutory** | On purchase | State-set — unwaivable. |
+| **Exchange transaction charges** | **Statutory** | NSE/BSE per turnover | Unwaivable. |
+| **SEBI turnover fee** | **Statutory** | Tiny per-turnover levy | Unwaivable. |
+| **GST** | **Statutory** | **18%** on brokerage + charges | Not on STT/stamp; unwaivable. |
 
-- **MTF interest** — the 9.85%–~18% p.a. above. The dominant cost on any
-  multi-week hold.
-- **Brokerage on MTF trades** — Paytm Money charges 0.1% (max Rs 20 on small
-  trades); some discount brokers charge a flat per-order fee; free-delivery
-  brokers may charge little or nothing. This alone can tilt the "cheapest"
-  answer.
-- **Pledge / unpledge charges** — typically **~Rs 15–20 + GST per scrip** per
-  pledge event at many brokers (m.Stock charges Rs 32 per PSN per day + GST for
-  Pay Later, which is on the higher side). Small in absolute terms, but it adds
-  up across many positions.
-- **DP (depository) charges on sell** — a per-scrip fee when you sell delivery
-  shares.
-
-**Statutory (same everywhere — set by government/exchange):**
-
-- **STT** (securities transaction tax) on delivery trades.
-- **Stamp duty** on purchase.
-- **Exchange transaction charges** (NSE/BSE).
-- **SEBI turnover fee.**
-- **GST** at 18% on brokerage + exchange charges (not on STT/stamp).
+The broker-set rows are where you shop and negotiate. The statutory rows are the
+same at every broker — no one can waive STT, stamp duty, exchange charges, the
+SEBI fee, or the 18% GST on brokerage.
 
 ### Worked total-cost example: Rs 2 lakh MTF hold for 1 year
 
-Say you borrow Rs 2,00,000 via MTF and hold for a full year at a 12% effective
-rate (a realistic mid-band figure once you cross the teaser slab):
+Borrow **Rs 2,00,000** via MTF and hold for a full year at a **12.49%** rate
+(Dhan's first band — a realistic best-case retail rate):
 
-- **Interest:** 2,00,000 × 12% = **Rs 24,000** for the year (Rs ~65.75/day).
-- **Brokerage:** at 0.1% on entry and exit of, say, a ~Rs 4 lakh total trade
-  value (buy + sell), roughly **Rs 400** + GST — or near zero on a free-delivery
-  broker.
-- **Pledge/unpledge + DP + statutory charges:** a few hundred rupees, depending
-  on scrips and broker.
+- **Interest:** 2,00,000 × 12.49% = **Rs 24,980** for the year (~Rs 68/day).
+- **MTF brokerage:** on entry and exit of, say, a ~Rs 4 lakh total trade value,
+  roughly **Rs 400 + GST** at 0.1% — or near zero on a free-delivery broker.
+- **Pledge/unpledge:** ~Rs 15–20 + GST per scrip per event — a few tens of rupees.
+- **DP on sell + statutory (STT, stamp, exchange, SEBI, GST):** a few hundred
+  rupees depending on scrips and trade value.
 
-The headline: **your stock has to rise more than ~12% in a year just to break
-even on the interest**, before you count everything else. On a Rs 2 lakh
-borrowing, you are handing the broker Rs 24,000 for the year — a real hurdle the
-position must clear before you make a paisa.
+All-in, you are handing over roughly **Rs 25,500 – Rs 26,000 for the year** on a
+Rs 2 lakh borrowing. **The stock has to rise more than ~13% in the year just to
+break even** — and that is at one of the cheapest confirmed rates. At Zerodha's
+14.6% or a full-service default 17.99%, the break-even hurdle is materially
+higher (~15% and ~18% respectively, before other costs).
 
-## Which is genuinely cheapest?
+## Which is genuinely cheapest — and the slab trick
 
-Honest answer: it depends on how much you borrow and for how long.
+Honest answer: it depends on **how much** you borrow and **how** the ladder is
+shaped.
 
-- **The sub-Rs-1-lakh teaser trick is real but narrow.** With Pocketful (5.99%)
-  or Paytm Money (7.99%), you genuinely keep the low rate only if each borrowing
-  stays under the lowest slab (Rs 1 lakh). Some traders split across brokers to
-  keep each book under its cheap band — but that means multiple accounts,
+- **The sub-Rs-1-lakh teaser trick is real but narrow.** Pocketful's 5.99% (or
+  Paytm's rumoured 7.99%) only holds if your **total** borrowing stays under
+  Rs 1 lakh — and only because those slabs are **non-incremental**, so a small
+  book gets the whole thing at the low rate. Push past Rs 1 lakh and the entire
+  amount re-prices to the higher band. Some traders split positions across brokers
+  to keep each book under its cheap slab, but that means multiple accounts,
   multiple pledge fees, and real hassle for a small position. Rarely worth it.
-- **For a normal retail position (Rs 1–5 lakh borrowed), Paytm Money's 9.99%
-  mid-band is the cheapest confirmed rate here**, and its low 0.1% MTF brokerage
-  (free on nothing, but cheap) helps. Dhan's 12.49% rising ladder is next, and
-  it is honest about the shape.
-- **A flat-rate or bundled-plan broker can win if you borrow large amounts.**
-  m.Stock's 9.99% kicks in above Rs 25 lakh and 8.99% above Rs 5 crore; a
-  full-service broker's ~9.85% top plan can beat a slab broker's mid-band — but
-  only if you actually clear the threshold or pay for the plan.
-- **Free / low delivery brokerage matters.** On a big trade value, 0.1%
-  brokerage on entry and exit is not trivial. A broker that is slightly costlier
-  on interest but free on brokerage can end up cheaper on a short hold.
+- **Fyers is inverted — it is the exception.** If you borrow **large** (above
+  Rs 25 lakh), Fyers' **12.49%** is genuinely one of the cheaper large-book rates.
+  The "slab trick" runs backwards here: scale down and you pay *more*, not less.
+- **For a normal Rs 1–5 lakh position, Dhan's 12.49% is the cheapest confirmed
+  rate**, with Zerodha's flat, transparent 14.6% next. Both beat the full-service
+  default of 17.99%.
+- **A paid plan can win if you borrow a lot and trade often.** ICICIdirect's or
+  Kotak Neo's ~9.69% can beat any discount broker's rate — but only after you have
+  paid the annual plan fee (Rs 9,999 in ICICIdirect's case) and only if your
+  borrowing is large enough that the interest saving exceeds the fee.
+- **Free/low delivery brokerage matters on big trade values.** A broker slightly
+  costlier on interest but free on brokerage can end up cheaper on a short hold.
 
-There is no single "cheapest MTF broker" — there is only the cheapest broker
-*for your borrowing size and holding period*. Match the slab to your actual
-position.
+There is no single "cheapest MTF broker" — only the cheapest broker *for your
+borrowing size and holding period*. Match the slab shape to your actual position:
+small book → rising-ladder or flat broker; very large book → inverted (Fyers) or
+paid-plan broker.
 
 ## Risks and a debt-first reality check
 
 MTF is leverage, and leverage cuts both ways.
 
-- **MTF interest never beats clearing a high-cost debt.** If you are carrying a
-  credit-card balance at ~40% a year, no MTF play — even at 8% — is worth it.
-  Pay off the card first. Borrowing at 12% to invest while paying 40% on a card
-  is setting money on fire.
-- **Interest keeps accruing while the stock falls.** You pay every calendar day
-  regardless of which way the price moves. A flat or falling stock plus interest
-  is a guaranteed loss.
-- **Margin calls are brutal.** If the stock drops and your margin falls below the
-  maintenance level, the broker issues a call; if you cannot top up, it forced-
-  sells your pledged shares — usually near the bottom, locking in the loss.
+- **Clearing high-cost debt beats any MTF play.** If you are carrying a
+  credit-card balance at **~40% a year**, no MTF arbitrage — even at 9.69% — comes
+  close. Borrowing at 12% to invest while paying 40% on a card is setting money on
+  fire. Pay the card first. This is the single most important line in the post.
+- **Margin call and forced square-off.** If the stock drops and your margin falls
+  below the maintenance level, the broker issues a call; if you cannot top up, it
+  **forced-sells your pledged shares — often near the bottom**, locking in the
+  loss. Zerodha, for instance, auto squares off once losses exceed **20% of the
+  funded amount** (a hard cut near the 80% level).
+- **Interest accrues every calendar day regardless of price direction.** A flat or
+  falling stock plus daily interest is a guaranteed loss. You pay for weekends and
+  holidays too.
 - **Leverage magnifies both directions.** A 4x position turns a 10% stock move
-  into a ~40% swing on your capital. Great on the way up, ruinous on the way
-  down.
+  into a ~40% swing on your capital — great on the way up, ruinous on the way down.
+- **Interest "compounding" via monthly debit.** While the accrual is simple
+  interest, once the month's interest is debited to your ledger it becomes part of
+  what you owe — so unpaid interest can itself start attracting funding costs if
+  it pushes your account into a debit. Keep the ledger clear.
 
 MTF is for experienced investors with a clear thesis, spare margin capacity, and
-the discipline to exit. It is not an emergency fund, not a substitute for cash,
-and not a way to "afford" a stock you otherwise cannot.
+the discipline to exit. It is **not** an emergency fund, not a substitute for
+cash, and not a way to "afford" a stock you otherwise cannot.
 
-## Tax note for buy-and-hold (informational)
+## Tax treatment (informational)
 
 If you hold the MTF shares and eventually sell:
 
-- **Long-term capital gains** (held > 12 months): taxed at **12.5%** (above the
-  annual exemption).
-- **Short-term capital gains** (held ≤ 12 months): taxed at **20%**.
-- **Interest deductibility** is nuanced. MTF interest is a cost of acquiring/
+- **Long-term capital gains** (held **> 12 months**): taxed at **12.5%** (above
+  the annual exemption).
+- **Short-term capital gains** (held **≤ 12 months**): taxed at **20%**.
+- **Interest deductibility is nuanced.** MTF interest is a cost of acquiring and
   holding an investment; whether and how it can be set off depends on your tax
-  situation and how you report the activity. This is informational, not tax
-  advice — check with a qualified tax professional for your case.
+  situation and how you report the activity (for example, as investment income
+  versus business income). This is **informational, not tax advice** — check with
+  a qualified tax professional for your case.
 
 ## FAQ
 
+**Is the MTF initial margin a flat 50%?**
+No. This is the most common myth. The regulatory initial margin is **risk-based
+and scrip-specific**: **VaR + 3 × ELM** for Group I stocks that are also in the
+F&O segment, and **VaR + 5 × ELM** for Group I non-F&O stocks and equity ETFs. The
+"50%" you have read about refers separately to the **composition of collateral**
+(how much must be cash-equivalent), not to the entry margin.
+
 **Is MTF interest charged daily or monthly?**
-It **accrues daily** on the borrowed amount (every calendar day, weekends
-included) and is typically **debited to your ledger monthly**. Monthly debit is
-not monthly compounding — it is just when the accumulated simple interest is
-booked.
+It **accrues daily** on the borrowed amount — every calendar day, weekends and
+holidays included — and is typically **debited to your ledger monthly** (some
+brokers post it weekly). Monthly debit is not monthly compounding; it is just when
+the accumulated simple interest is booked.
 
 **Do teaser rates apply to my whole position?**
-No — and this is the single biggest trap. Rates like 5.99% or 7.99% apply
-**only to the lowest slab** (usually the first Rs 1 lakh borrowed). Anything
-above that is charged at the higher band rate (12–16% at most brokers). Your
-effective rate is a blend, dominated by the higher slab.
+Usually not. Rates like 5.99% apply **only to the lowest slab** (often the first
+Rs 1 lakh borrowed). At brokers with **non-incremental** slabs (like Pocketful),
+crossing the threshold re-prices your **entire** book to the higher band. And
+"9.69%" headlines (ICICIdirect, Kotak Neo) are **paid-plan floors** — the default
+plan pays far more (17.99% at ICICIdirect).
+
+**Which stocks can I buy on MTF?**
+Only **Group I** equity shares and equity ETF units — the exchange's most liquid
+classification (broadly, traded on at least 80% of days with impact cost ≤ 1%).
+Each broker publishes its own MTF-approved list, a subset of Group I, updated
+periodically. Illiquid and penny stocks are not eligible.
+
+**What happens on a margin call?**
+If your stock falls and your maintained margin drops below the required level, the
+broker issues a margin call asking you to add funds or securities. If you do not
+meet it, the broker can **forced-sell (square off)** your pledged shares — strictly
+in the manner set out in your **Rights and Obligations Document**. Some brokers
+(e.g. Zerodha) auto square-off once losses exceed a set share of the funded amount
+(20% at Zerodha).
 
 **Can I hold an MTF position forever?**
 Most brokers state no fixed holding limit — you can hold as long as you maintain
-margin. But interest runs every day, and if your margin coverage drops below the
-maintenance threshold the broker can square you off. "Forever" is possible in
-theory; expensive in practice.
-
-**Is MTF interest tax-deductible?**
-It is nuanced and depends on how you report the investment activity. It is a cost
-of holding, but deductibility is not automatic — consult a tax professional
-rather than assuming.
-
-**What happens on a margin call?**
-If your stock falls and your margin drops below the maintenance level (40% under
-the standard framework), the broker issues a margin call asking you to add funds
-or securities. If you do not, it can **forced-sell (square off)** your pledged
-shares to cover the shortfall — often at a loss.
+margin and pay interest. But interest runs every day, and a margin shortfall can
+trigger square-off. "Forever" is possible in theory; expensive in practice.
 
 **Which is the cheapest MTF broker in India?**
-For a normal retail position (Rs 1–5 lakh borrowed), **Paytm Money's 9.99%
-mid-band is the cheapest confirmed rate** in this comparison, with Dhan's 12.49%
-rising ladder next. The "5.99%" and "from 8.99%" headlines apply only to bands
-almost no retail trader uses. Confirm current rates on each broker's page — they
-change frequently.
+For a normal retail position (Rs 1–5 lakh borrowed), **Dhan's 12.49%** is the
+cheapest **confirmed** rate here, with Zerodha's flat **14.6%** next. If you
+borrow very large amounts, **Fyers' inverted 12.49%** (above Rs 25 lakh) or a
+paid-plan **9.69%** (ICICIdirect Rs 9,999 plan / Kotak Neo Trade Free Pro) can
+win — but only after the plan fee. The "5.99%" and "9.69%" headlines apply only to
+tiny slabs or paid plans. Confirm current rates on each broker's page.
+
+**Is MTF the same as a personal loan for shares?**
+Functionally similar (you borrow to buy an asset and pay interest), but MTF is a
+**secured, exchange-regulated facility**: the shares you buy are the collateral,
+they are marked to market daily, and forced square-off protects the broker if the
+collateral falls. A personal loan is unsecured and unregulated by SEBI. MTF rates
+(12.49%–18%) can be lower than an unsecured personal loan, but the forced-sale
+risk is real and immediate.
+
+**Does the SEBI June 2026 consultation change any of this?**
+Not yet. The June 2026 consultation paper **proposes** raising broker minimum net
+worth from Rs 3 crore to Rs 5 crore, allowing MTF funding via NCDs, and expanding
+eligible collateral. As of writing, it is **a proposal, not a rule** — nothing has
+changed until SEBI issues a final circular.
 
 ---
 
-*Not investment advice. MTF rates, slabs, and charges change frequently — always
-confirm the current numbers on the broker's official page before you act. Rates
-as of August 2026. Remember: every low teaser rate quoted here (5.99%, 7.99%,
-"from 8.99%") applies to the lowest slab only; the rate you actually pay on a
-normal position is the higher band rate.*
+*Not investment advice. MTF rates, slabs, plan structures, and charges change
+frequently — several changed in the weeks before this was written. Always confirm
+the current numbers on the broker's official page before you act. **All rates as
+of 13 August 2026.** Remember: every low headline quoted here (5.99%, 7.99%,
+9.69%) applies to a small lowest slab or a paid plan only; the rate you actually
+pay on a normal position is the higher band or default rate. Where a broker is
+marked "not independently verified", treat the figure as a lead to confirm, not a
+fact to rely on.*
+
+## Sources & further reading
+
+**Regulation (SEBI / exchanges):**
+
+- SEBI Master Circular for Stock Brokers — MTF provisions, Section 39 (Rights &
+  Obligations Document), and the initial-margin framework (Table 10 as summarised
+  in the June 2026 consultation).
+- SEBI Comprehensive Risk Management framework (updated October 2023) — Group I
+  liquidity classification and the rolling six-month liquidity assessment.
+- SEBI Consultation Paper on the review of the Margin Trading Facility (June
+  2026) — proposed net-worth, NCD-funding, and collateral changes.
+- NSE / BSE — published lists of Group I securities and MTF-eligible scrips.
+
+**Broker official pages (verify the live rate):**
+
+- Zerodha — MTF charges and terms (interest, brokerage, pledge, square-off).
+- Angel One — Margin Trading Facility rates.
+- Pocketful — MTF slab rates.
+- Fyers — MTF interest slabs (effective 2 June 2025).
+- Dhan — MTF interest ladder.
+- ICICIdirect — MTF / Prime plan interest rates (effective 21 August 2026).
+- Kotak Neo — Trade Free Pro MTF rate.
+- HDFC Securities — BSPL ("Buy Stocks Pay Later") terms; HDFC Sky MTF pricing.
