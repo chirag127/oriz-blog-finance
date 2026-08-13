@@ -89,6 +89,25 @@ Until then the honest setup is: one FIU app for balances, PDF parsing for the
 transaction detail it won't show, and manual entry for P2P. Not elegant. But
 it's the truth of what's possible for an individual in India today.
 
+## Do the banks offer their own APIs?
+
+Yes — HDFC, ICICI, Axis and Yes Bank all run public developer portals. But
+they're **partner-only**: you create an application, get a client ID/secret, and
+often sign a legal agreement with IP whitelisting. They're built for fintechs
+and corporates integrating with the bank, not for an individual pulling their
+own account. There is no public, personal-use open-banking API from any Indian
+bank. For your own account, AA consent is the only route.
+
+## Is there an app that gives a combined statement?
+
+Worth knowing before you build anything: **INDmoney's bank tracker says it can
+download the statements of all your linked accounts** — a consolidated,
+multi-bank statement via the AA flow, without you writing code. Pure AA consent
+apps like **Anumati** (by Perfios) and **OneMoney** do the multi-bank linking
+too. So if you just want the combined statement to read or archive, an existing
+FIU app may already give it — the DIY route only matters if you want the raw
+data in your own pipeline.
+
 ## The takeaway
 
 The plumbing for a single, code-fetched view of your entire financial life
