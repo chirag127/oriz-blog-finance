@@ -1,0 +1,286 @@
+---
+title: "Can you buy ETFs on MTF in India (2026)? The honest, broker-by-broker answer"
+description: "Yes — ETFs can be bought on MTF in India, but only when they clear SEBI's Group I liquidity bar and land on your broker's approved list. Here is the verified picture: Dhan's explicit ETF eligibility, up to 4x leverage, 12.49–15.49% interest, and the three things people confuse — MTF-buy vs pledge-as-collateral vs intraday."
+pubDate: 2026-08-14
+category: "Invest"
+tags: ["mtf", "etf", "margin-trading", "sebi", "brokers", "leverage", "india", "group-i"]
+author: "Chirag Singhal"
+---
+
+Short answer: **yes, you can buy ETFs on MTF (Margin Trading Facility) in India in
+2026 — but not any ETF, and not at every broker.** Eligibility is not a blanket
+"all ETFs allowed" rule. It is **liquidity-gated and broker-specific**: an ETF
+qualifies only if it sits in the exchange's **Group I** classification and then
+survives your broker's own risk filters and makes it onto that broker's approved
+MTF list.
+
+That is the whole answer in one paragraph. The rest of this post explains *why*
+that is the answer, what it costs, and — most importantly — untangles the three
+different things people mix up when they ask this question:
+
+1. **Buying an ETF on MTF** (the broker part-funds your purchase),
+2. **Pledging an ETF you already own as collateral** for margin, and
+3. **Intraday leverage** on an ETF.
+
+These are three separate mechanisms with three separate rulebooks. Confusing them
+is the single biggest source of wrong answers on this topic.
+
+**Everything here is time-sensitive.** All leverage, interest, and eligibility
+figures are as verified in **August 2026** and are broker-set — they change
+without notice. Confirm the live number on your broker's own page before acting.
+And read the honest limits at the end: the research this is built on could confirm
+the *framework* clearly, but it could **not** point to a specific named ETF (a
+Nifty, Sensex, or gold ETF) appearing on a named broker's live MTF list. That gap
+is stated plainly below rather than papered over.
+
+## The regulatory basis: why ETFs qualify at all
+
+MTF is not a broker invention — it runs inside SEBI's Margin Trading Facility
+framework. Under that framework, **margin funding is restricted to "Group I"
+securities**. Group I is the exchange's liquidity-based classification for the
+most liquid, lowest-risk instruments — broadly, those traded on a large majority
+of trading days with a low impact cost.
+
+Crucially, **Group I is a classification of *securities*, not just of shares.** An
+ETF unit that meets the Group I liquidity bar is inside the MTF-eligible universe;
+an illiquid ETF that fails it is not. This is exactly why the answer is "some ETFs,
+not all" rather than a flat yes or no.
+
+Dhan's own support documentation states it plainly for its platform: only
+securities in **"Group 1 stock of the exchange categorisation" are available for
+margin funding**, and its risk-management system (RMS) **further excludes**
+securities that fail predefined liquidity requirements. So there are effectively
+**two gates** an ETF must pass:
+
+| Gate | Set by | What it tests |
+| --- | --- | --- |
+| **Gate 1 — Group I** | Exchange (SEBI framework) | Is the ETF liquid enough to be Group I at all? |
+| **Gate 2 — Broker RMS filter** | Each individual broker | Does it also clear the broker's own liquidity/risk cutoffs? |
+
+An ETF has to clear **both** to be buyable on MTF at a given broker. That layering
+is standard, documented practice — not a Dhan quirk.
+
+## ETFs are explicitly in the MTF universe (Dhan is the clearest case)
+
+The clearest confirmation that ETFs are *not* categorically excluded comes from
+Dhan. Its MTF FAQ contains a question worded, verbatim:
+
+> "What is the criteria for bonds/ETFs to be available for MTF?"
+
+That heading directly acknowledges **ETFs in the eligibility context** — the
+question is not *whether* an ETF can be on MTF, but *what criteria* it must meet.
+That is a meaningful signal: brokers headline their MTF products around stocks
+(Dhan markets "1,700+ stocks"), but ETFs are treated as eligible-when-qualifying,
+not carved out.
+
+Two honesty notes, carried straight from the verified research:
+
+- **Do not assert that Angel One excludes ETFs from MTF.** A plausible-sounding
+  claim that "Angel One's MTF is delivery-equity-only, no ETFs" was **refuted** in
+  verification — Angel One's page simply does not mention ETFs one way or the
+  other, which is *not* the same as excluding them.
+- **Do not attribute ETF-exclusion to Groww either.** A similar "Groww lists no
+  ETFs / index funds for MTF" claim was also **refuted** (the source page returned
+  a 404 and could not be confirmed). Silence on a page is not exclusion.
+
+In other words: the evidence supports "ETFs are eligible when they qualify," and
+it specifically knocks down the tempting counter-claims that named brokers exclude
+them. What it does **not** do is prove a specific ETF is live on a specific list —
+more on that gap below.
+
+## The list is broker-specific and revisable — always check it live
+
+There is no single, fixed, universal "ETFs allowed on MTF" list. Each broker
+**maintains its own approved MTF list**, derived from the exchange's Group I
+securities, and **revises it periodically**. Dhan, for example, does not embed the
+list inline in its product page — it links out to a separate, maintained
+stocks-list page.
+
+The practical consequence:
+
+> Whether *your* ETF is MTF-buyable can only be answered on *your* broker's live
+> list, on the day you check. An ETF eligible last quarter can drop off if its
+> liquidity falls out of Group I; one that was excluded can be added.
+
+Treat any general statement (including this post) as the framework, and the
+broker's live list as the fact.
+
+## The distinction that trips everyone up: MTF-buy vs pledge vs intraday
+
+This is the heart of the topic. "Can I use an ETF with margin?" can mean three
+completely different things:
+
+| Mechanism | What actually happens | Governing idea |
+| --- | --- | --- |
+| **Buy ETF on MTF** | Broker part-funds your *purchase* of the ETF; you take delivery, the funded units are auto-pledged, you pay daily interest on the borrowed portion. | MTF framework — Group I eligibility. |
+| **Pledge an ETF you own as collateral** | You already hold the ETF; you pledge it (after a haircut) to raise margin for *other* trades. | SEBI pledge-in-depository rule. |
+| **Intraday leverage on an ETF** | Same-day leveraged position, squared off before close. | Separate intraday margin rules. |
+
+Three things worth pinning down precisely:
+
+- **Pledging for margin is its own SEBI-regulated mechanism.** Since **1 September
+  2020**, SEBI requires brokers to accept client securities as margin **only via
+  pledge in the depository system** (CDSL/NSDL). So "pledge my ETF for margin" is a
+  distinct, regulated action — not the same as buying an ETF on MTF.
+- **MTF-bought holdings are auto-pledged.** Stock (or ETF units) *bought* through
+  MTF are automatically pledged as the broker's collateral until you repay. This is
+  mechanically different from *voluntarily* pledging free holdings you already own.
+- **An ETF can play in two of these at once.** A given liquid ETF may be (a)
+  eligible to *buy* on MTF, **and/or** (b) pledgeable as collateral after a
+  haircut. These are separate questions with separate answers — an ETF could be
+  pledgeable for margin but not on a broker's MTF-buy list, or vice versa.
+
+Dhan makes the collateral side explicit: **both cash and non-cash (pledged)
+holdings** can serve as MTF collateral — its available funds for MTF are described
+as your combined ledger balance *plus* pledged holdings.
+
+## Leverage and cost: the verified numbers
+
+For the brokers substantiated in this research (Angel One and Dhan), here is what
+was confirmed. All figures are **broker-set and time-sensitive (verified August
+2026)**.
+
+### Leverage — "up to 4x", with a caveat
+
+- **Angel One:** MTF "allows you to buy **up to 4x** more shares than your current
+  cash balance." Worked example from its page: Rs 10,000 of your own cash buys
+  Rs 40,000 of shares, with Angel One funding the Rs 30,000 difference.
+- **Dhan:** "Maximum Leverage: **Up to 4X** on eligible securities."
+
+The honest caveat: **4x is a maximum / marketing headline, not a floor.** Actual
+per-instrument leverage depends on the SEBI VaR + ELM margin for that specific
+security and the broker's approved list. Many securities — and especially
+less-liquid ETFs — get **less than 4x**. None of the verified sources stated a
+specific leverage or haircut figure *for ETFs as a category* versus equities, so
+do not assume an ETF gets the full 4x.
+
+### Interest cost — the number that decides everything
+
+MTF is a loan, and you pay daily interest on the borrowed amount (borrowed amount
+= total purchase value minus the cash you paid). This is the dominant cost of any
+multi-week hold.
+
+| Broker | Interest (verified Aug 2026) | Notes |
+| --- | --- | --- |
+| **Angel One** | **0.041%/day ≈ 14.97% p.a.** on the borrowed amount | Flat daily rate. |
+| **Dhan** | **0.0342%/day ≈ 12.49% p.a. base**, tiered up to **15.49% p.a.** | From 12.49% (up to Rs 5 lakh borrowed) to 15.49% (Rs 25 lakh – Rs 5 crore). Accrues from settlement date. |
+
+Angel One also advertises a **promotional 0% interest for the first 30 days** on
+borrowing up to Rs 1 lakh, with the standard 0.041%/day applying after. Promos are
+by nature time-limited and can change without notice.
+
+**Why the interest matters for an ETF specifically:** ETFs, especially broad
+index ETFs, are lower-volatility instruments than individual mid caps. If you fund
+one at ~12.5–15% a year, **the ETF has to appreciate by more than the interest
+rate just to break even** on the borrowed slice — a high bar for an instrument
+built to track a benchmark, not to shoot the lights out. That maths is the real
+reason buying a broad ETF on MTF is rarely a compelling trade, even where it is
+permitted.
+
+### Context: this is different from cash-segment margin
+
+For an ordinary cash-market (non-MTF) delivery buy, the upfront margin is the
+**higher of 20% or (VaR + ELM)** of the transaction value — SEBI's peak/upfront
+margin rule. That is the *cash-segment* rule, governed separately from the MTF
+initial-margin framework. It is included here only to underline that "margin" in
+the cash segment and "margin" under MTF are not the same lever.
+
+## Verdict
+
+- **Can you buy ETFs on MTF in India in 2026? Yes — conditionally.** An ETF is
+  buyable on MTF if it (1) qualifies as a Group I security and (2) appears on your
+  specific broker's approved MTF list on the day you check.
+- **It is not universal.** No broker offers "all ETFs on MTF." The list is
+  liquidity-gated, broker-specific, and revised over time.
+- **Dhan is the clearest confirmed case** that ETFs are inside the MTF universe
+  (its FAQ explicitly names "bonds/ETFs" eligibility criteria), with up to 4x on
+  eligible securities and tiered interest of 12.49–15.49% p.a.
+- **Do not confuse the three mechanisms.** Buying on MTF, pledging a held ETF as
+  collateral, and intraday leverage are distinct. Since Sept 2020, pledging for
+  margin is a separate depository-pledge process; MTF-bought units are
+  auto-pledged.
+- **The economics rarely favour it for broad ETFs.** At ~12.5–15% annual interest,
+  a benchmark-tracking ETF must clear a steep hurdle just to break even on the
+  funded portion. Where permitted, that does not make it a good idea.
+
+If you want to *hold* an ETF with leverage as a considered position, check your
+broker's live MTF list for that exact ETF, confirm the leverage and interest it
+actually attracts (not the 4x headline), and price in that the interest accrues
+every day regardless of which way the ETF moves.
+
+## What this research could NOT confirm (stated honestly)
+
+Carried straight from the verification, so you are not misled:
+
+- **No source named a specific ETF on a specific broker's live MTF list.** The
+  finding that "ETFs can be on MTF" rests on Dhan's generic "bonds/ETFs"
+  eligibility-criteria acknowledgment **plus** the Group I framework — **not** on
+  an observed, populated ETF-on-MTF list. So whether, say, a Nifty 50 ETF or a gold
+  ETF is *currently* fundable at a given broker must be checked on that broker's
+  live list.
+- **Only Dhan and Angel One were substantiated.** For **Zerodha, Groww, Upstox,
+  ICICI Direct, Kotak, HDFC Securities, 5paisa, and Paytm Money**, this research
+  did **not** confirm whether they permit ETFs on MTF — and, importantly, the
+  claims that Groww or Angel One *exclude* ETFs were **refuted**, not confirmed
+  either way. Do not assume exclusion.
+- **Some Dhan-specific details sit at medium underlying confidence.** The exact
+  Dhan support-article URL was unreachable for live re-fetch during verification;
+  the Dhan claims were corroborated via Dhan's main MTF page (which carries the
+  identical "bonds/ETFs" FAQ) plus regulatory domain knowledge.
+- **Per-ETF haircut and max leverage are unknown from this evidence.** No verified
+  source stated the specific margin/haircut or maximum leverage applied to ETFs as
+  opposed to equities.
+- **No primary SEBI MTF circular text was directly fetched this session.** The
+  regulatory citations rest on broker secondary pages plus domain knowledge. All
+  leverage, interest, and eligibility figures are broker-set and can change without
+  notice.
+
+## FAQ
+
+**Can I buy any ETF on MTF?**
+No. Only ETFs that qualify as **Group I** securities *and* pass your broker's own
+risk/liquidity filters *and* appear on that broker's approved MTF list. Illiquid
+ETFs will not qualify.
+
+**Is buying an ETF on MTF the same as pledging my ETF for margin?**
+No — these are two different mechanisms. Buying on MTF means the broker part-funds
+your purchase (and auto-pledges the units). Pledging an ETF you already own means
+using a held asset as collateral for margin, via the SEBI depository-pledge
+process mandated since 1 September 2020.
+
+**Which brokers let me buy ETFs on MTF?**
+The verified research confirmed the **framework** and Dhan's explicit
+"bonds/ETFs" eligibility criteria. It did not confirm a live, named ETF on any
+broker's list, and it substantiated only Dhan and Angel One among major brokers.
+For everyone else — including Zerodha, Groww, Upstox, ICICI Direct, Kotak, HDFC
+Securities, 5paisa, Paytm Money — check the broker's live MTF list directly.
+
+**What leverage and interest apply?**
+Up to 4x on eligible securities (a maximum, often less per instrument). Verified
+interest: Angel One ~0.041%/day (~14.97% p.a.); Dhan ~0.0342%/day (~12.49% p.a.
+base), tiered up to 15.49% p.a. Figures are broker-set and time-sensitive (August
+2026).
+
+**Does the ETF get the full 4x leverage?**
+Not necessarily. 4x is a headline maximum. Actual leverage depends on the specific
+security's VaR + ELM margin and the broker's list. The verified research did not
+state a specific ETF leverage or haircut figure, so confirm it on your broker's
+platform.
+
+**Is it a good idea to buy a broad index ETF on MTF?**
+Rarely. At ~12.5–15% annual interest, a benchmark-tracking ETF has to appreciate
+by more than the interest rate just to break even on the funded portion — a high
+bar for an instrument designed to track, not outperform. Eligibility does not
+imply advisability.
+
+---
+
+*General information, not investment advice. All leverage, interest, and
+eligibility figures are broker-set and **time-sensitive — verified as of August
+2026** — and can change without notice. MTF-eligible-security lists are
+broker-specific and revised periodically; whether a given ETF is fundable must be
+checked on your broker's live list before you act. This post confirms the
+regulatory framework and Dhan's explicit ETF eligibility criteria, but no source
+named a specific ETF on a specific broker's live MTF list — that gap is stated
+deliberately. MTF is leverage; it magnifies losses as well as gains and can lead
+to forced square-off of your pledged holdings.*

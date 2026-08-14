@@ -1,0 +1,360 @@
+---
+title: "Nifty500 Value 50 vs BSE Enhanced Value: the exact methodology, side by side (2026)"
+description: "Two value indices, two different recipes. Nifty500 Value 50 uses a 4-factor Z-score (E/P, B/P, S/P, Dividend Yield); the BSE Enhanced Value family uses 3 factors (B/P, E/P, S/P). Here is the exact selection, weighting, caps, and rebalance for each — plus a screener.in query that approximates them so you can replicate the tilt yourself."
+pubDate: 2026-08-14
+category: "Invest"
+tags: ["value-investing", "index-methodology", "nifty500-value-50", "bse-enhanced-value", "smart-beta", "screener", "india"]
+author: "Chirag Singhal"
+---
+
+Two of India's best-known "value" indices sound like they measure the same thing.
+They do not. **Nifty500 Value 50** and the **BSE Enhanced Value Index** are both
+value-tilted smart-beta constructions, but they use **different factor sets,
+different caps, and different parent universes** — so they hold different stocks
+and can behave differently in the same market.
+
+This post lays out the **exact, primary-source methodology** for each: which
+factors go into the value score, how the score is computed, how the top stocks are
+selected, how they are weighted, the stock and sector caps, and the rebalance
+calendar. Then it gives you a **screener.in query that approximates each index**,
+so you can replicate the value tilt in your own portfolio — with an honest note on
+exactly where a hand-rolled screen diverges from the real index.
+
+**On sourcing and honesty.** The Nifty500 Value 50 details below are verified
+against the **NSE Indices Methodology Document, August 2026 (rev 20260612),
+Section 34** — current and quoted verbatim. The BSE Enhanced Value details are
+verified against the **S&P Enhanced Value Indices methodology (the S&P Global
+parent framework that governs the BSE variant)**, not a BSE-branded PDF directly.
+That distinction matters, and it is flagged clearly wherever it applies. Index
+methodologies are revised periodically — confirm the live document before you rely
+on any exact parameter.
+
+## The one-paragraph difference
+
+Nifty500 Value 50 selects **50 stocks from the Nifty 500** using a value score
+built from **four factors** — Earnings-to-Price (E/P), Book Value-to-Price (B/P),
+Sales-to-Price (S/P), and **Dividend Yield** — each turned into a Z-score,
+equal-weighted, then transformed into a value-tilt multiplier. The BSE Enhanced
+Value family uses **three factors** — Book Value-to-Price, Earnings-to-Price, and
+Sales-to-Price — with **no dividend-yield factor**. Both weight holdings by
+`value score × float-adjusted market cap` and both cap sectors and single stocks,
+but the specific cap numbers differ (Nifty caps each stock at 3× its float weight;
+the S&P framework uses 20×). The headline: **Nifty adds a dividend-yield leg; the
+S&P/BSE framework does not** — that single difference changes which stocks each
+one favours.
+
+## Nifty500 Value 50 — the exact methodology
+
+*Source: NSE Indices Methodology Document, August 2026 (rev 20260612), Section 34
+"Nifty500 Value 50". Verified verbatim.*
+
+### Parent universe
+
+The index consists of **50 companies from its parent Nifty 500 index**, selected
+on their value scores. So the starting pool is the broad Nifty 500 — large, mid,
+and small caps that make the Nifty 500 at review.
+
+### The four factors
+
+The value score of each company is determined from four fundamental ratios:
+
+| Factor | Ratio |
+| --- | --- |
+| Earnings-to-Price | **E/P** |
+| Book Value-to-Price | **B/P** |
+| Sales-to-Price | **S/P** |
+| Dividend Yield | **Div. Yield** |
+
+Latest fiscal-year data is used; **consolidated** financials where available, else
+standalone.
+
+### How the value score is computed
+
+Each factor is converted to a **Z-score** against the eligible universe:
+
+`Z-score = (x − mean) ÷ standard deviation`
+
+The four Z-scores are then **equal-weighted at 0.25 each**:
+
+`Weighted Z = 0.25·Z(E/P) + 0.25·Z(B/P) + 0.25·Z(S/P) + 0.25·Z(Div. Yield)`
+
+That average Z is transformed into a value-tilt multiplier that is always positive
+and rises with "cheapness":
+
+`Value Score = (1 + AvgZ)        if AvgZ > 0`
+`Value Score = (1 − AvgZ)^(−1)   if AvgZ < 0`
+
+The **top 50 stocks by value score** are selected.
+
+### Weighting and caps
+
+Weighting is **value-score tilted**, not plain market-cap:
+
+`Weight ∝ free-float market cap × value score`
+
+Then the caps apply:
+
+| Cap | Level |
+| --- | --- |
+| Per sector | **25%** |
+| Per stock | **lower of 5% or 3× the stock's free-float market-cap weight** |
+| Capping frequency | semi-annually, at rebalancing |
+
+The **3× stock cap** is a specific fingerprint of this index (a sibling index,
+Nifty200 Value 30, uses 5× instead) — worth knowing if you ever compare them.
+
+### Eligibility filters
+
+To enter, a stock must:
+
+- Be **part of the Nifty 500** at the time of review;
+- Have a **minimum listing history of 1 month**;
+- Rank **within the top 400 on BOTH** average daily turnover **and** average daily
+  free-float market cap, over the previous six months ending May and November.
+
+One honest note: the methodology's eligibility section enumerates only those three
+criteria — **no explicit F&O-eligibility filter appears** for this index. (That
+was the one verified point that drew a dissenting vote in review, on the grounds
+it is a negative inference; the primary text supports it.)
+
+### Rebalance and buffer
+
+- **Reconstitution:** semi-annual, in **June and December**, on six months of data
+  ending **May and November** respectively.
+- **Buffer rule:** the **top 25** by value score are compulsorily included;
+  existing constituents whose rank **falls beyond 75** are compulsorily excluded.
+  The buffer between 25 and 75 reduces churn.
+
+## BSE Enhanced Value Index — the methodology (S&P framework)
+
+*Source: S&P Enhanced Value Indices methodology (S&P Global), verified May 2023
+version. This is the **parent framework** that governs the BSE variant; the
+BSE-specific (Asia Index-branded) PDF was **not** verified directly — see the
+caveat box.*
+
+### The three factors
+
+The value score is computed from exactly **three fundamental measures** — and
+notably, **no dividend yield**:
+
+| Factor | Ratio | Definition |
+| --- | --- | --- |
+| Book Value-to-Price | **BVPS / P** | latest book value per share ÷ price |
+| Earnings-to-Price | **EPS / P** | trailing-12-month EPS ÷ price |
+| Sales-to-Price | **SPS / P** | trailing-12-month sales per share ÷ price |
+
+These three are composited into a value score. (The S&P family builds a Z-score
+composite from the three ratios; the **precise** compositing steps — winsorization
+thresholds, whether the average Z is itself capped — could **not** be confirmed
+from a primary source in this pass, so this post does not assert them. See caveat.)
+
+### Weighting and caps
+
+Constituents are weighted by **`value score × float-adjusted market capitalization`**,
+subject to the S&P global constraints:
+
+| Cap | Level |
+| --- | --- |
+| Per security | **lower of 5% or 20× its market-cap weight** in the eligible universe |
+| Per GICS sector | **40%** |
+| Per country | 40% (**multi-country regional indices only** — not applicable to a single-country BSE index) |
+| Weight floor | **0.05%** per stock |
+
+## Side by side
+
+| Feature | Nifty500 Value 50 | BSE Enhanced Value (S&P framework) |
+| --- | --- | --- |
+| Parent universe | **Nifty 500** (verified) | BSE benchmark — **not confirmed** (BSE 500 vs BSE LargeMidCap open) |
+| Number of factors | **4** | **3** |
+| Factors | E/P, B/P, S/P, **Div. Yield** | B/P, E/P, S/P (**no dividend yield**) |
+| Scoring | Equal-weight Z-scores → tilt multiplier | Value-score composite of 3 Z-scores |
+| Weighting | free-float mcap × value score | float-adj mcap × value score |
+| Per-stock cap | lower of 5% or **3×** float weight | lower of 5% or **20×** mcap weight |
+| Sector cap | **25%** | **40% (GICS)** |
+| Weight floor | not stated in verified text | **0.05%** |
+| Rebalance | semi-annual, **June/Dec** (verified) | semi-annual (exact calendar **not** confirmed) |
+
+**Reading the table:** the two real, load-bearing differences are (1) **Nifty's
+fourth factor, Dividend Yield**, which biases it toward stocks that actually pay
+out, and (2) **the cap regime** — Nifty's tighter 3× stock cap and 25% sector cap
+force more diversification than the S&P framework's looser 20× / 40%. Everything
+else is the same broad idea: cheap-on-fundamentals stocks, weighted by a blend of
+value and size.
+
+<div style="border:1px solid #d97706;background:#fffbeb;padding:1rem 1.25rem;border-radius:8px;margin:1.5rem 0;">
+
+**Caveat — the BSE side is framework-level, not BSE-document-verified.** The three
+factors, the 20×/40%/0.05% caps, and the weighting formula above come from the
+**S&P Global** Enhanced Value Indices methodology, not the BSE-branded PDF. The BSE
+Enhanced Value Index sits in this same S&P family, but these were not independently
+confirmed against a BSE primary source: **the exact parent universe, the number of
+constituents, the single-country cap schedule, and the precise rebalance calendar
+remain unconfirmed.** The 40% country cap does not apply to a single-country index.
+Two specific S&P claims were actively **refuted** in review and are deliberately
+omitted here: a "2.5/97.5 percentile winsorization, ±4 average cap" scoring detail,
+and a "third Friday of June/December" rebalance-timing schedule. Do not rely on
+either. Confirm the BSE-specific document before replicating that index precisely.
+
+</div>
+
+## Replicating each index on screener.in
+
+You cannot perfectly reproduce a Z-scored, capped, value-weighted index in a free
+stock screener — screener.in ranks and filters, it does not run cross-sectional
+Z-scores or apply weight caps. But you **can** approximate the *tilt*: filter to a
+liquid universe, then rank on the same value factors the index uses. Here is a
+practical query for each.
+
+Screener.in exposes the four ingredients we need directly or via inverses:
+
+- **E/P** ≈ inverse of P/E → screen on **low Price to Earning**.
+- **B/P** ≈ inverse of P/B → screen on **low Price to book value**.
+- **S/P** ≈ inverse of P/S; screener.in does not expose P/S cleanly for all names,
+  so use **Market Capitalization / Sales** (or the "Price to Sales" custom ratio)
+  as the low-is-cheap proxy.
+- **Dividend Yield** → screen on **high Dividend Yield** (Nifty only).
+
+### Approximating Nifty500 Value 50 (4-factor)
+
+Paste this into the screener.in **query builder** (Create new screen → Edit query).
+It applies a liquidity floor, keeps the four value factors cheap/high, and sorts by
+the composite spirit of the index:
+
+```
+Market Capitalization > 1000 AND
+Price to Earning > 0 AND
+Price to Earning < 25 AND
+Price to book value < 3 AND
+Market Capitalization / Sales < 3 AND
+Dividend Yield > 0.5
+```
+
+Then **sort ascending on Price to Earning** (and eyeball P/B and Mcap/Sales) to
+mimic the "cheapest by value score" ranking, and skim the dividend-yield column so
+the fourth factor is doing its job. This gives you a value-and-yield tilt in the
+spirit of the four equal-weighted factors.
+
+### Approximating BSE Enhanced Value (3-factor)
+
+Same idea, minus the dividend-yield leg:
+
+```
+Market Capitalization > 1000 AND
+Price to Earning > 0 AND
+Price to Earning < 25 AND
+Price to book value < 3 AND
+Market Capitalization / Sales < 3
+```
+
+Sort ascending on **Price to Earning**, then scan P/B and Mcap/Sales. The absence
+of the dividend-yield filter is the whole point — this screen will surface
+lower-or-no-payout cheap stocks that the Nifty screen would push down.
+
+### Where the screen honestly diverges from the real index
+
+Be clear about what a screener **cannot** do, so you do not mistake this for the
+actual index:
+
+- **No Z-scoring.** The real indices standardise each factor cross-sectionally
+  (`(x − mean)/std`) and blend them equally. A screener uses hard cutoffs and a
+  single sort key, so a stock that is brilliant on three factors but fails one
+  cutoff gets dropped — the index would still score it well.
+- **No value-weighting or caps.** The index weights by value × market cap and then
+  caps stocks and sectors. A screener just gives you a list; you decide weights.
+  Expect the raw list to over-represent whatever sector is cheap right now — the
+  25% (Nifty) / 40% (S&P) sector caps exist precisely to prevent that.
+- **No exact eligibility match.** The index universe is the Nifty 500 (or a BSE
+  benchmark) with a top-400 turnover-and-float-cap filter; `Market Cap > 1000` cr
+  is a rough stand-in, not the same universe.
+- **Cutoffs are arbitrary.** The `< 25` P/E and `< 3` P/B numbers are sensible
+  starting values, not index parameters — tighten or loosen them for your taste.
+
+Treat the screen as a **shortlist generator that captures the factor tilt**, then
+apply your own diversification and position sizing — or, if you want the exact
+rules-based exposure, buy the index fund/ETF that tracks the index rather than
+hand-rolling it.
+
+## Verdict
+
+If you want the **short version**: the two indices are cousins, not twins. **Both
+buy fundamentally cheap stocks weighted by value and size.** The differences that
+actually matter are that **Nifty500 Value 50 adds a Dividend-Yield factor** (so it
+leans toward cheap *and* paying stocks) and applies **tighter caps** (3× per stock,
+25% per sector) that force more diversification, while the **BSE Enhanced Value
+framework is a pure 3-factor cheapness play** (B/P, E/P, S/P) with looser caps.
+
+For a DIY investor, either **factor tilt is easy to approximate on screener.in** —
+use the 4-factor query if you want the dividend leg, the 3-factor query if you
+want pure cheapness — but remember a free screener gives you a *shortlist*, not the
+Z-scored, capped, value-weighted portfolio the real index holds. If you want the
+exact exposure, use the tracking fund; if you want to understand and lean the
+tilt yourself, the queries above are your starting point.
+
+## FAQ
+
+**What is the single biggest difference between the two indices?**
+The **factor count**: Nifty500 Value 50 uses **four** factors including **Dividend
+Yield**; the BSE Enhanced Value (S&P) framework uses **three** (Book-to-Price,
+Earnings-to-Price, Sales-to-Price) and has **no dividend-yield leg**. The other
+material difference is the cap regime (3×/25% for Nifty vs 20×/40% for the S&P
+framework).
+
+**How does Nifty500 Value 50 pick its 50 stocks?**
+It Z-scores each of the four factors across the eligible universe, equal-weights
+them (0.25 each), transforms the average into a value-score multiplier, and takes
+the **top 50 by value score**. A buffer rule (top 25 always in; rank beyond 75
+always out) limits turnover. Verified against the NSE Indices Methodology Document,
+August 2026.
+
+**Is the BSE Enhanced Value methodology in this post from a BSE document?**
+No — and this is stated honestly. It is from the **S&P Global** Enhanced Value
+Indices methodology, the parent framework the BSE variant belongs to. The
+BSE-branded PDF was not verified directly, so the exact parent universe, number of
+constituents, single-country caps, and rebalance calendar are **unconfirmed**.
+Confirm the BSE document before relying on those specifics.
+
+**Can I replicate these indices exactly on screener.in?**
+No. A free screener filters and sorts; it does not compute cross-sectional
+Z-scores, value-weight holdings, or apply stock/sector caps. The queries in this
+post capture the **factor tilt** as a shortlist — you then apply your own weighting
+and diversification. For exact exposure, use a fund/ETF that tracks the index.
+
+**Why does Nifty include Dividend Yield and the S&P framework does not?**
+That is a design choice by each index provider — this post reports the verified
+factor sets, not the rationale. The practical effect is that Nifty500 Value 50
+leans toward cheap stocks that also **pay dividends**, while the 3-factor BSE
+framework is a purer cheapness screen that will surface low- or no-payout names the
+Nifty index would rank lower.
+
+**Which one is "better"?**
+Neither is universally better — they express value differently. A dividend-conscious
+investor may prefer the 4-factor Nifty tilt; someone chasing pure cheapness may
+prefer the 3-factor BSE tilt. Backtested returns depend on the period and are not
+covered here. This is **general information, not investment advice.**
+
+---
+
+*General information, not investment advice. Index methodologies are revised
+periodically. The Nifty500 Value 50 details are verified against the **NSE Indices
+Methodology Document, August 2026 (rev 20260612), Section 34**; the BSE Enhanced
+Value details are from the **S&P Global Enhanced Value Indices methodology** (the
+parent framework — the BSE-specific document was not independently verified, and
+the parent universe, constituent count, single-country caps, and rebalance calendar
+remain unconfirmed). Two specific S&P scoring/rebalance details were refuted in
+review and are deliberately omitted. Screener.in ratios and field names change;
+confirm the current query builder fields before relying on a saved screen. Always
+confirm the live methodology document and screener output before acting.*
+
+## Sources & further reading
+
+- **NSE Indices — Methodology Document for NIFTY Equity Indices**, August 2026 (rev
+  20260612), Section 34 "Nifty500 Value 50" (parent universe, four factors,
+  Z-score scoring, top-50 selection, weighting, 3×/25% caps, eligibility, June/Dec
+  rebalance and buffer). Primary source, verified verbatim.
+- **S&P Dow Jones Indices — Methodology: S&P Enhanced Value Indices** (three-factor
+  value score: book-to-price, earnings-to-price, sales-to-price; value × float-adj
+  mcap weighting; 5%/20× security cap, 40% GICS sector cap, 0.05% floor). Parent
+  framework governing the BSE Enhanced Value Index; BSE-branded document not
+  verified directly.
+- **screener.in** — query builder and ratio definitions (Price to Earning, Price to
+  book value, Market Capitalization, Market Capitalization / Sales, Dividend Yield).
